@@ -124,7 +124,7 @@ export default function OTPVerification({
             type="text"
             value={otp}
             onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            placeholder="6 оронтой код"
+            placeholder="4 оронтой код"
             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4 text-center text-2xl tracking-widest text-black"
             maxLength={6}
           />
