@@ -1,4 +1,3 @@
-import { verifyOTP } from "@/lib/otp";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -12,14 +11,22 @@ export async function POST(request: Request) {
             );
         }
 
-        const result = verifyOTP(identifier, code);
+        const response = await fetch("http://10.21.68.207:10070/api/v1/otp/verify", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ identifier, code, type })
+        })
 
-        if(!result.success) {
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
             return NextResponse.json({
                 success: false,
-                error: result.error,
+                error: result.error || 'OTP verification failed',
                 remaining: result.remaining
-            })
+            }, { status: response.status || 400 });
         }
 
         return NextResponse.json({

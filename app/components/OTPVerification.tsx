@@ -3,7 +3,7 @@ import { useState } from "react";
 
 interface OTPVerificationProps {
   type: "email" | "sms";
-  identifier: string; // email or phone number
+  identifier: string;
   onVerified: () => void;
   onCancel?: () => void;
 }
@@ -35,6 +35,7 @@ export default function OTPVerification({
         body: JSON.stringify({
           type,
           [type === "email" ? "email" : "phone"]: identifier,
+          app_name: "esnAwards"
         }),
       });
 
@@ -54,8 +55,8 @@ export default function OTPVerification({
   }
 
   async function verifyOTP() {
-    if (otp.length !== 6) {
-      setError("6 оронтой код оруулна уу");
+    if (otp.length !== 4) {
+      setError("4 оронтой код оруулна уу");
       return;
     }
 
@@ -69,8 +70,8 @@ export default function OTPVerification({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          identifier,
-          code: otp,
+          [type === "email" ? "email" : "phone"]: identifier,
+          OTP: otp,
           type,
         }),
       });
@@ -141,7 +142,7 @@ export default function OTPVerification({
 
           <button
             onClick={verifyOTP}
-            disabled={isLoading || otp.length !== 6}
+            disabled={isLoading || otp.length !== 4}
             className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg mb-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Шалгаж байна..." : "Баталгаажуулах"}

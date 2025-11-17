@@ -1,8 +1,4 @@
 import { NextResponse } from 'next/server';
-import { rateLimit } from '@/lib/rateLimit';
-import { generateOTP, storeOTP } from '@/lib/otp';
-import { sendEmailOTP } from '@/lib/emailService';
-import { sendSMSOTP } from '@/lib/smsService';
 
 export async function POST(request: Request) {
     try {
@@ -30,51 +26,35 @@ export async function POST(request: Request) {
         }
 
         const identifier = type === 'email' ? email : phone;
-        const ip = request.headers.get('x-forwarded-for') ?? 'anynomous';
-        // const { success: rateLimitSuccess } = rateLimit(
-        //     `otp:${ip}:${identifier}`,
-        //     3,              // 3 OTP requests
-        //     10 * 60 * 1000  // per 10 minutes
-        // );
+        const app_name = "esnAwards";
+        
+        const response = await fetch("http://10.21.68.207:10070/api/v1/otp/send", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({identifier, type, app_name})
+        })
 
-        // if (!rateLimitSuccess) {
-        // return NextResponse.json(
-        //         { 
-        //             success: false, 
-        //             error: 'Хэт олон удаа код авахыг оролдлоо. 10 минутын дараа дахин оролдоно уу.' 
-        //         },
-        //             { status: 429 }
-        //     );
-        // }
-
-        const otp = generateOTP(6);
-        storeOTP(identifier, otp, 6);
-
-        let result;
-
-        if(type === 'email') {
-            result = sendEmailOTP(email, otp);
-        } else {
-            result = sendSMSOTP(phone, otp);
-        }
-
-        if(!(await result).success) {
+        const result = await response.json();
+        
+        if (!response.ok || !result.success) {
             return NextResponse.json(
-                {success: false, error: (await result).error},
-                {status: 500}
-            )
+                { success: false, error: result.error || 'Failed to send OTP' },
+                { status: response.status || 500 }
+            );
         }
 
         return NextResponse.json({
             success: true,
-            message: `Баталгаажуулах код ${type === 'email' ? 'email' : 'phone number'} руу илгээлээ`,
-            expiresIn: 300
-        })
+            message: result.message,
+            data: result.data
+        });
     } catch (error) {
-    console.error('Error sending OTP:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to send OTP' },
-      { status: 500 }
-    );
-  }
+        console.error('Error sending OTP:', error);
+        return NextResponse.json(
+            { success: false, error: 'Failed to send OTP' },
+            { status: 500 }
+        );
+    }
 }
