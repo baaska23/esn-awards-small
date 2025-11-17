@@ -1,16 +1,10 @@
-import { NextResponse } from "next/server";
-import { getServerClient } from "@/lib/db";
+import { NextResponse } from 'next/server';
+import { getClient } from '@/lib/db';
 
 export async function GET() {
-    const { data, error } = await getServerClient
-        .from('awards')  // or 'esn_awards' - check your actual table name
-        .select('*')
-        .eq('slug', 'teams')
-        .eq('sport_id', 2);
-
-    if (error) {
-        console.error("Supabase error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-    return NextResponse.json(data ?? []);
+  const client = getClient();
+  await client.connect();
+  const result = await client.query('SELECT * FROM esn.awards WHERE slug = $1 and sport_id =  $2', ['teams', 2]);
+  await client.end();
+  return NextResponse.json(result.rows ?? []);
 }

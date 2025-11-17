@@ -2,8 +2,6 @@
 import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
-import CustomPlayerCard from "../components/CustomPlayerCard";
-import sportImg from "../../public/cs2_logo.png";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import CustomStreamer from "../components/CustomStreamerCard";

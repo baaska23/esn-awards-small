@@ -1,17 +1,14 @@
-import { createClient } from '@supabase/supabase-js';
+import { Client } from 'pg';
+import dotenv from 'dotenv';
 
-// Client-side (browser) - uses anon key
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+dotenv.config();
 
-export const getClient = createClient(supabaseUrl, supabaseAnonKey);
-
-// Server-side (API routes) - uses service role key
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
-
-export const getServerClient = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-});
+export function getClient() {
+  return new Client({
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+  });
+}

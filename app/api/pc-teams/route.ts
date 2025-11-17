@@ -1,16 +1,23 @@
-import { NextResponse } from "next/server";
-import { getServerClient } from "@/lib/db";
+import { NextResponse } from 'next/server';
+import { getClient } from '@/lib/db';
 
 export async function GET() {
-    const { data, error } = await getServerClient
-        .from('awards')  // or 'esn_awards' - check your actual table name
-        .select('*')
-        .eq('slug', 'teams')
-        .eq('sport_id', 1);
-
-    if (error) {
-        console.error("Supabase error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-    return NextResponse.json(data ?? []);
+  const client = getClient();
+  try {
+    await client.connect();
+    const result = await client.query(
+      'SELECT * FROM esn.awards WHERE slug = $1 and sport_id = $2',
+      ['teams', 1]
+    );
+    await client.end();
+    return NextResponse.json(result.rows ?? []);
+  } catch (error) {
+    await client.end();
+    console.error('API error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json(
+      { error: 'Internal Server Error', details: errorMessage },
+      { status: 500 }
+    );
+  }
 }
