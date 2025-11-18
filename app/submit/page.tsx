@@ -31,21 +31,21 @@ export default function Submit() {
   }
 
   async function startVerification() {
-    let response;
-    if (detectInputType(input) == "email") {
-      response = await fetch(`/api/check-email?email=${encodeURIComponent(input)}`)
-    } else if (detectInputType(input) === "sms") {
-      response = await fetch(`/api/check-phone?phoneNumber=${encodeURIComponent(input)}`)
-    }
+    // let response;
+    // if (detectInputType(input) == "email") {
+    //   response = await fetch(`/api/check-email?email=${encodeURIComponent(input)}`)
+    // } else if (detectInputType(input) === "sms") {
+    //   response = await fetch(`/api/check-phone?phoneNumber=${encodeURIComponent(input)}`)
+    // }
 
-    const data = await response?.json();
+    // const data = await response?.json();
 
-    if (data.exists) {
-      alert(`Энэ имэйлээр/утсаар санал өгсөн байна`);
-      sessionStorage.clear();
-      router.push("/");
-      return;
-    }
+    // if (data.exists) {
+    //   alert(`Энэ имэйлээр/утсаар санал өгсөн байна`);
+    //   sessionStorage.clear();
+    //   router.push("/");
+    //   return;
+    // }
 
     const payload: Record<string, unknown> = {};
     for (let i = 0; i < sessionStorage.length; i++) {
@@ -91,6 +91,26 @@ export default function Submit() {
         return;
       }
     }
+
+    const today = new Date().toISOString().slice(0, 10);
+    let total = 0;
+
+    try {
+      const res = await fetch(`/api/check-register?identity=${encodeURIComponent(input)}&date=${today}`);
+      if (res.ok) {
+        const data = await res.json();
+        total = data.total ?? 0;
+      }
+    } catch (e) {
+      total = 0;
+    }
+
+    if (total >= 1) {
+      alert("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
+      setIsLoading(false);
+      return;
+    }
+
     setShowOtp(true);
   }
 
@@ -125,6 +145,14 @@ export default function Submit() {
       highlight_id: payload.highlight_id
     };
 
+    const today = new Date().toISOString().slice(0, 10);
+    let total = 0;
+    const registration = {
+      last_updated: today,
+      identity: input,
+      total: total + 1
+    }
+
     try {
       const response = await fetch("/api/submit", {
         method: "POST",
@@ -142,6 +170,28 @@ export default function Submit() {
       }
     } catch (error) {
       console.error("Submission error:", error);
+      alert("Алдаа гарлаа. Дахин оролдоно уу.");
+    } finally {
+      setIsLoading(false);
+    }
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(registration),
+      });
+
+      if (response.ok) {
+        setIsSubmit(true);
+        sessionStorage.clear();
+      } else {
+        alert("Алдаа гарлаа. Дахин оролдоно уу.");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
       alert("Алдаа гарлаа. Дахин оролдоно уу.");
     } finally {
       setIsLoading(false);
