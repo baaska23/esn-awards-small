@@ -86,7 +86,7 @@ export default function Team() {
                   index={index}
                   img={`/${team.team_image_url}`}
                   name={team.team_name}
-                  isSelected={selectedTeamId === team.team_id}
+                  isSelected={selectedTeamId === team.pc_team_id}
                   onClick={() => handleSelect(team.pc_team_id)}
               />
             ))
