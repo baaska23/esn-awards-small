@@ -39,9 +39,8 @@ export default function Coach() {
     }
   }, []);
 
-  function handleSelect(coach_sport_id: number, coach_id: number) {
+  function handleSelect(coach_id: number) {
     setSelectedCoachId(coach_id);
-    sessionStorage.setItem("coach_sport_id", JSON.stringify(coach_sport_id));
     sessionStorage.setItem("coach_id", JSON.stringify(coach_id));
     setTimeout(() => {
       router.push("/igl");
@@ -69,7 +68,7 @@ export default function Coach() {
             name={coach.fullname}
             index={index}
             isSelected={selectedCoachId === coach.coach_id}
-            onClick={() => handleSelect(coach.sport_id, coach.coach_id)}
+            onClick={() => handleSelect(coach.coach_id)}
           />
         ))}
       </div>

@@ -19,8 +19,7 @@ export default function Team() {
     .then((res) => res.json())
     .then((data) => {
       console.log("Data in teams: ", data);
-      
-      // Check if data has an error property
+    
       if (data.error) {
         setError(data.error);
         setData([]);
@@ -40,11 +39,10 @@ export default function Team() {
     });
   }, []);
 
-  // Ensure teams is always an array
   const teams = Array.isArray(data) ? data : [];
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("team_id");
+    const raw = sessionStorage.getItem("pc_team_id");
     if (raw) {
       try {
         const parsed = JSON.parse(raw);
@@ -53,10 +51,9 @@ export default function Team() {
     }
   }, []);
 
-  function handleSelect(team_id: number, team_sport_id: number) {
-    setSelectedTeamId(team_id);
-    sessionStorage.setItem("team_sport_id", JSON.stringify(team_sport_id));
-    sessionStorage.setItem("team_id", JSON.stringify(team_id));
+  function handleSelect(pc_team_id: number) {
+    setSelectedTeamId(pc_team_id);
+    sessionStorage.setItem("pc_team_id", JSON.stringify(pc_team_id));
     setTimeout(() => {
       router.push("/mobile-team");
     }, 200);
@@ -84,13 +81,13 @@ export default function Team() {
           {teams.length > 0 ? (
             teams.map((team, index) => (
               <CustomTeamCard
-                  key={team.team_id}
+                  key={team.pc_team_id}
                   sportImg={`/${team.sport_image_url}`}
                   index={index}
                   img={`/${team.team_image_url}`}
                   name={team.team_name}
                   isSelected={selectedTeamId === team.team_id}
-                  onClick={() => handleSelect(team.team_id, team.sport_id)}
+                  onClick={() => handleSelect(team.pc_team_id)}
               />
             ))
           ) : (

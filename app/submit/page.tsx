@@ -114,17 +114,15 @@ export default function Submit() {
       email: type === "email" ? input : null,
       phone_number: type === "sms" ? input.replace(/\D/g, "") : null,
       verified: true,
-      player_sport_id: payload.player_sport_id,
-      player_id: payload.player_id,
-      team_sport_id: payload.team_sport_id,
-      team_id: payload.team_id,
-      highlight_id: payload.highlight_id,
-      highlight_sport_id: payload.highlight_sport_id,
-      highlight_player_id: payload.highlight_player_id,
-      talent_id: payload.talent_id,
+      pc_team_id: payload.pc_team_id,
+      mobile_team_id: payload.mobile_team_id,
+      pc_player_id: payload.pc_player_id,
+      mobile_player_id: payload.mobile_player_id,
+      coach_id: payload.coach_id,
       igl_id: payload.igl_id,
+      talent_id: payload.talent_id,
       streamer_id: payload.streamer_id,
-      coach_id: payload.coach_id
+      highlight_id: payload.highlight_id
     };
 
     try {

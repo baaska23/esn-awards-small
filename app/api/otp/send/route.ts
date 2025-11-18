@@ -37,6 +37,7 @@ export async function POST(request: Request) {
         })
 
         const result = await response.json();
+        console.log("Backend response:", result);
         
         if (!response.ok || !result.success) {
             return NextResponse.json(

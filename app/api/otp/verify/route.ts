@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
     try {
-        const {identifier, code, type} = await request.json();
+        const body = await request.json();
+        const identifier = body.email || body.phone;
+        const otp = body.OTP;
 
-        if(!identifier || !code || !type) {
+        if(!identifier || !otp) {
             return NextResponse.json(
                 {success: false, error: 'All fields are required'},
                 {status: 400}
@@ -16,7 +18,7 @@ export async function POST(request: Request) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ identifier, code, type })
+            body: JSON.stringify({ identifier, otp })
         })
 
         const result = await response.json();

@@ -23,14 +23,14 @@ export default function Team() {
 
   const teams = (data ?? []) as {
     sport_id: number,
-    team_id: number,
+    mobile_team_id: number,
     team_name: string,
     team_image_url: string,
     sport_image_url: string
   }[];
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("team_id");
+    const raw = sessionStorage.getItem("mobile_team_id");
     if (raw) {
       try {
         const parsed = JSON.parse(raw);
@@ -39,10 +39,9 @@ export default function Team() {
     }
   }, []);
 
-  function handleSelect(team_id: number, team_sport_id: number) {
-    setSelectedTeamId(team_id);
-    sessionStorage.setItem("team_sport_id", JSON.stringify(team_sport_id));
-    sessionStorage.setItem("team_id", JSON.stringify(team_id));
+  function handleSelect(mobile_team_id: number) {
+    setSelectedTeamId(mobile_team_id);
+    sessionStorage.setItem("mobile_team_id", JSON.stringify(mobile_team_id));
     setTimeout(() => {
       router.push("/pc-player");
     }, 200);
@@ -61,13 +60,13 @@ export default function Team() {
       <div className="w-full max-w-6xl mx-auto grid grid-cols-3 gap-4 gap-y-12 sm:gap-6 justify-items-center items-stretch lg:grid-cols-6 pt-8">
         {teams.map((team, index) => (
           <CustomTeamCard
-            key={team.team_id}
+            key={team.mobile_team_id}
             sportImg={`/${team.sport_image_url}`}
             index={index}
             img={`/${team.team_image_url}`}
             name={team.team_name}
-            isSelected={selectedTeamId === team.team_id}
-            onClick={() => handleSelect(team.team_id, team.sport_id)}
+            isSelected={selectedTeamId === team.mobile_team_id}
+            onClick={() => handleSelect(team.mobile_team_id)}
           />
         ))}
       </div>

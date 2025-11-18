@@ -51,6 +51,7 @@ export default function OTPVerification({
       console.error(err);
     } finally {
       setIsSending(false);
+      
     }
   }
 

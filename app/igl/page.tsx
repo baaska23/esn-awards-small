@@ -40,10 +40,9 @@ export default function Igl() {
     }
   }, []);
 
-  function handleSelect(player_sport_id: number, igl_id: number) {
+  function handleSelect(igl_id: number) {
     setSelectedIglId(igl_id);
-    sessionStorage.setItem("player_sport_id", JSON.stringify(player_sport_id));
-    sessionStorage.setItem("player_id", JSON.stringify(igl_id));
+    sessionStorage.setItem("igl_id", JSON.stringify(igl_id));
     setTimeout(() => {
       router.push("/talent");
     }, 200);
@@ -70,7 +69,7 @@ export default function Igl() {
             name={player.fullname}
             index={index}
             isSelected={selectedIglId === player.igl_id}
-            onClick={() => handleSelect(player.sport_id, player.igl_id)}
+            onClick={() => handleSelect(player.igl_id)}
           />
         ))}
       </div>

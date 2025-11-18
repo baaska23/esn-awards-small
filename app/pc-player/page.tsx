@@ -22,7 +22,7 @@ export default function Player() {
   const players = (data ?? []) as {
     sport_id: number,
     team_id: number,
-    player_id: number,
+    pc_player_id: number,
     username: string,
     fullname: string,
     player_image_url: string,
@@ -31,7 +31,7 @@ export default function Player() {
   }[];
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("player_id");
+    const raw = sessionStorage.getItem("pc_player_id");
     if (raw) {
       try {
         const parsed = JSON.parse(raw);
@@ -40,10 +40,9 @@ export default function Player() {
     }
   }, []);
 
-  function handleSelect(player_sport_id: number, player_id: number) {
-    setSelectedPlayerId(player_id);
-    sessionStorage.setItem("player_sport_id", JSON.stringify(player_sport_id));
-    sessionStorage.setItem("player_id", JSON.stringify(player_id));
+  function handleSelect(pc_player_id: number) {
+    setSelectedPlayerId(pc_player_id);
+    sessionStorage.setItem("pc_player_id", JSON.stringify(pc_player_id));
     setTimeout(() => {
       router.push("/mobile-player");
     }, 200);
@@ -62,15 +61,15 @@ export default function Player() {
       <div className="w-full max-w-6xl mx-auto grid grid-cols-3 grid-rows-2 gap-4 gap-y-12 sm:gap-6 justify-items-center items-stretch lg:grid-cols-6 lg:grid-rows-1 pt-8">
         {players.map((player, index) => (
           <CustomPlayerCard
-            key={player.player_id}
+            key={player.pc_player_id}
             sportImg={`/${player.sport_image_url}`}
             img={`/${player.player_image_url}`}
             teamImg={`/${player.team_image_url}`}
             username={player.username}
             name={player.fullname}
             index={index}
-            isSelected={selectedPlayerId === player.player_id}
-            onClick={() => handleSelect(player.sport_id, player.player_id)}
+            isSelected={selectedPlayerId === player.pc_player_id}
+            onClick={() => handleSelect(player.pc_player_id)}
           />
         ))}
       </div>

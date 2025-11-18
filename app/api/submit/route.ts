@@ -10,29 +10,36 @@ export async function POST(request: Request){
         await client.connect();
         await client.query(
             `INSERT INTO esn.submissions (
-                timestamp, email, verified, 
-                player_sport_id, player_id, 
-                team_sport_id, team_id, 
-                highlight_sport_id, highlight_player_id, highlight_id, phone_number, talent_id, igl_id, streamer_id, coach_id
+                timestamp, 
+                email, 
+                phone_number, 
+                verified, 
+                pc_team_id, 
+                mobile_team_id, 
+                pc_player_id, 
+                mobile_player_id, 
+                coach_id,
+                igl_id,
+                talent_id,
+                streamer_id,
+                highlight_id
             ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
             )`,
             [
                 new Date().toISOString(),
                 submission.email,
-                submission.verified,
-                submission.player_sport_id,
-                submission.player_id,
-                submission.team_sport_id,
-                submission.team_id,
-                submission.highlight_sport_id,
-                submission.highlight_player_id,
-                submission.highlight_id,
                 submission.phone_number,
-                submission.talent_id,
+                submission.verified,
+                submission.pc_team_id,
+                submission.mobile_team_id,
+                submission.pc_player_id,
+                submission.mobile_player_id,
+                submission.coach_id,
                 submission.igl_id,
+                submission.talent_id,
                 submission.streamer_id,
-                submission.coach_id
+                submission.highlight_id
             ]
         );
 

@@ -23,8 +23,6 @@ export default function Highlight() {
   }, []);
 
   const highlights = (data ?? []) as {
-    sport_id: number;
-    player_id: number;
     highlight_id: number;
     username: string;
     player_image_url: string;
@@ -43,13 +41,9 @@ export default function Highlight() {
   }, []);
 
   function handleSelect(
-    highlight_sport_id: number,
-    highlight_player_id: number,
     highlight_id: number
   ) {
     setSelectedhighlightId(highlight_id);
-    sessionStorage.setItem("highlight_sport_id", JSON.stringify(highlight_sport_id));
-    sessionStorage.setItem("highlight_player_id", JSON.stringify(highlight_player_id));
     sessionStorage.setItem("highlight_id", JSON.stringify(highlight_id));
     setTimeout(() => {
       router.push("/submit");
@@ -88,7 +82,7 @@ export default function Highlight() {
         {highlights.map((highlight, index) => {
           return (
             <CustomHighlightCard
-              key={highlight.player_id}
+              key={highlight.highlight_id}
               username={highlight.username}
               posterImg={`/${highlight.highlight_image_url}`}
               index={index}
@@ -97,8 +91,6 @@ export default function Highlight() {
               onPlayClick={() => handlePlayVideo(highlight.highlight_url)}
               onClick={() =>
                 handleSelect(
-                  highlight.sport_id,
-                  highlight.player_id,
                   highlight.highlight_id
                 )
               }
