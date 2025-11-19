@@ -19,6 +19,8 @@ export async function GET(request: Request) {
       [identity, date]
     );
 
+    console.log("result in check-register: ", result);
+
     await client.end();
 
     return NextResponse.json({ total: parseInt(result.rows[0].total, 10) });
