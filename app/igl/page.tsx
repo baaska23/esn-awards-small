@@ -12,7 +12,7 @@ export default function Igl() {
   const [selectedIglId, setSelectedIglId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/igls')
+    fetch('/esport/api/igls')
     .then((res) => res.json())
     .then((data) => {
       setData(data);

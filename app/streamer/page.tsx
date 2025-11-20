@@ -12,7 +12,7 @@ export default function Streamer() {
   const [selectedStreamerId, setSelectedStreamerId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/streamers')
+    fetch('/esport/api/streamers')
     .then((res) => res.json())
     .then((data) => {
       setData(data);

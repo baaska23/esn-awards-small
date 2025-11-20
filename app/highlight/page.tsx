@@ -15,7 +15,7 @@ export default function Highlight() {
   const [currentVideoUrl, setCurrentVideoUrl] = useState<string>("");
 
   useEffect(() => {
-    fetch('/api/highlights')
+    fetch('/esport/api/highlights')
     .then((res) => res.json())
     .then((data) => {
       setData(data)

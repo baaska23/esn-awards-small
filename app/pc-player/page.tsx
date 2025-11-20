@@ -12,7 +12,7 @@ export default function Player() {
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/pc-players')
+    fetch('/esport/api/pc-players')
     .then((res) => res.json())
     .then((data) => {
       setData(data);

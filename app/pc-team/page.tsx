@@ -3,7 +3,6 @@ import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
 import CustomTeamCard from "../components/CustomTeamCard";
-import cs2Logo from "../../public/cs2_logo.png";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -15,7 +14,7 @@ export default function Team() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/pc-teams')
+    fetch('/esport/api/pc-teams')
     .then((res) => res.json())
     .then((data) => {
       console.log("Data in teams: ", data);
@@ -73,7 +72,7 @@ export default function Team() {
       
       {error && (
         <div className="text-red-500 text-xl bg-white/20 p-4 rounded-lg">
-          Error: {error}
+          Error: {error} 2swAZq
         </div>
       )}
       

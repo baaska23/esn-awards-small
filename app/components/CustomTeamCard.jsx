@@ -2,6 +2,7 @@ import Image from "next/image";
 import {motion} from "framer-motion"
 
 export default function CustomTeamCard({ sportImg, img, name, isSelected, onClick, index }) {
+    console.log("sportImg:", sportImg, "img:", img);
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}

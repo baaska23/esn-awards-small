@@ -12,7 +12,7 @@ export default function Coach() {
   const [selectedCoachId, setSelectedCoachId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/coaches')
+    fetch('/esport/api/coaches')
     .then((res) => res.json())
     .then((data) => {
       setData(data);

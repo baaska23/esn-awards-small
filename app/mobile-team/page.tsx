@@ -3,7 +3,6 @@ import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
 import CustomTeamCard from "../components/CustomTeamCard";
-import cs2Logo from "../../public/cs2_logo.png";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -13,7 +12,7 @@ export default function Team() {
   const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/mobile-teams')
+    fetch('/esport/api/mobile-teams')
     .then((res) => res.json())
     .then((data) => {
       console.log("Data in teams: ", data)

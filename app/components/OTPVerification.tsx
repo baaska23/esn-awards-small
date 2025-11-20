@@ -27,7 +27,7 @@ export default function OTPVerification({
     setMessage("");
 
     try {
-      const response = await fetch("/api/otp/send", {
+      const response = await fetch("/esport/api/otp/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export default function OTPVerification({
     setError("");
 
     try {
-      const response = await fetch("/api/otp/verify", {
+      const response = await fetch("/esport/api/otp/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -12,7 +12,7 @@ export default function Talent() {
   const [selectedTalentId, setSelectedTalentId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/talents')
+    fetch('/esport/api/talents')
     .then((res) => res.json())
     .then((data) => {
       setData(data);

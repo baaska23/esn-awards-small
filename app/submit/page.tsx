@@ -96,7 +96,7 @@ export default function Submit() {
     let total = 0;
 
     try {
-      const res = await fetch(`/api/check-register?identity=${encodeURIComponent(input)}&date=${today}`);
+      const res = await fetch(`/esport/api/check-register?identity=${encodeURIComponent(input)}&date=${today}`);
       if (res.ok) {
         const data = await res.json();
         total = data.total ?? 0;
@@ -154,7 +154,7 @@ export default function Submit() {
     }
 
     try {
-      const response = await fetch("/api/submit", {
+      const response = await fetch("/esport/api/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -176,7 +176,7 @@ export default function Submit() {
     }
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/esport/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
