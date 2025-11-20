@@ -2,7 +2,6 @@
 import Image from "next/image";
 import CustomButton from "./components/CustomButton";
 import CustomTitle from "./components/CustomTitle";
-import esnLogo from "../public/esn_logo.png";
 import {motion} from "framer-motion"
 
 export default function Home() {
@@ -10,12 +9,12 @@ export default function Home() {
     <div
       className="
         font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20
-        bg-[url('/BG_MOBILE_1.jpg')] md:bg-[url('/BG_DESKTOP_1.jpg')]
+        bg-[url('/esport/BG_MOBILE_1.jpg')] md:bg-[url('/esport/BG_DESKTOP_1.jpg')]
         bg-no-repeat bg-cover bg-center bg-fixed
       "
     >
       <Image
-        src={esnLogo}
+        src={`/esport/esn_logo.png`}
         alt="Next.js logo"
         width={140}
         height={35}

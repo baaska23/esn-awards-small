@@ -62,7 +62,7 @@ export default function Team() {
     <div
       className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        bg-[url('/BG_MOBILE_2.jpg')] md:bg-[url('/BG_DESKTOP_2.jpg')]
+        bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]
         bg-no-repeat bg-cover bg-center bg-fixed
       "
     >
@@ -78,7 +78,9 @@ export default function Team() {
       
       <div className="w-full max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 gap-y-12 sm:gap-6 justify-items-center items-stretch pt-8">
           {teams.length > 0 ? (
-            teams.map((team, index) => (
+            teams.map((team, index) => {
+              console.log("sport_image_url", `/${team.sport_image_url}`)
+              return(
               <CustomTeamCard
                   key={team.pc_team_id}
                   sportImg={`/${team.sport_image_url}`}
@@ -87,8 +89,8 @@ export default function Team() {
                   name={team.team_name}
                   isSelected={selectedTeamId === team.pc_team_id}
                   onClick={() => handleSelect(team.pc_team_id)}
-              />
-            ))
+              />)}
+            )
           ) : (
             !loading && !error && (
               <div className="col-span-full text-white text-xl">
