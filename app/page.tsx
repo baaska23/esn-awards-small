@@ -1,8 +1,8 @@
-'use client'
+"use client";
 import Image from "next/image";
 import CustomButton from "./components/CustomButton";
 import CustomTitle from "./components/CustomTitle";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
@@ -21,11 +21,12 @@ export default function Home() {
         priority
       />
       <CustomTitle />
-      <motion.div  
-      initial={{ opacity: 0, scale: 0.75 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0 }} 
-                        className="bg-white/20 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-2 text-gray-700 text-xl font-bold">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.75 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0 }}
+        className="bg-white/20 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-2 text-gray-700 text-xl font-bold"
+      >
         Санал хураалт 2025.12.15 18:00 цагт хаагдана
       </motion.div>
       <CustomButton to="/pc-team">ЭХЛЭХ</CustomButton>

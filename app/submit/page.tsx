@@ -259,7 +259,7 @@ export default function Submit() {
         </form>
       )}
 
-      <Image src={esnLogo} alt="ESN logo" width={140} height={35} priority />
+      <Image src={`/esport${esnLogo}`} alt="ESN logo" width={140} height={35} priority />
 
       <div className="w-full max-w-6xl flex justify-center items-center mt-4 px-4">
         <div className="m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-6 py-2 shadow-md">

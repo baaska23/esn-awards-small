@@ -62,10 +62,10 @@ export default function CustomHighlightCard({
         }
       }}
     >
-      <div className="flex flex-col items-center gap-2 flex-shrink-0">
+      <div className="flex flex-col items-center gap-2 shrink-0">
         <div className="relative w-24 h-32 md:w-28 md:h-36 lg:w-40 lg:h-40">
           <Image 
-            src={playerImg} 
+            src={`/esport${playerImg}`} 
             alt="playerImg" 
             fill 
             className="object-cover rounded-lg" 
@@ -82,7 +82,7 @@ export default function CustomHighlightCard({
       <div className="flex items-center flex-1 w-full gap-1">
         <div className="relative flex-1 aspect-video rounded-lg overflow-hidden min-w-0">
           <Image 
-            src={posterImg} 
+            src={`/esport${posterImg}`} 
             alt={`${username} highlight`} 
             fill 
             className="object-cover" 
@@ -91,12 +91,12 @@ export default function CustomHighlightCard({
         </div>
         <button
           onClick={handlePlayButtonClick}
-          className="relative w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 flex-shrink-0 bg-yellow-400 hover:bg-yellow-500 rounded-lg flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 active:scale-95"
+          className="relative w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 shrink-0 bg-yellow-400 hover:bg-yellow-500 rounded-lg flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 active:scale-95"
           aria-label="Play video"
         >
           <div className="relative w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8">
             <Image 
-              src={playButton} 
+              src={`/esport${playButton}`} 
               alt="play" 
               fill
               className="object-contain" 
