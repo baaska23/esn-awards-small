@@ -87,7 +87,7 @@ export default function CustomFavPlayerCard({
 
       {/* =============== MOBILE =============== */}
       <div className="flex md:hidden gap-3 cursor-pointer">
-        <div className="relative w-30 h-30 flex-shrink-0">
+        <div className="relative w-30 h-30 shrink-0">
           <Image
             src={`/esport/${teamImg}`}
             alt={teamName}
