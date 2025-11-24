@@ -3,7 +3,7 @@ import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
 import CustomHighlightCard from "../components/CustomHighlightCard";
-import playButton from "../../public/playB.png";
+import playButton from "../../public/playB.png"
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -74,9 +74,9 @@ export default function Highlight() {
       <CustomTitle />
       <CustomHeader header1="HIGHLIGHT" header2="OF THE YEAR" />
       <div className="
-        w-full max-w-6xl mx-auto 
-        grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 
-        gap-6 sm:gap-8 lg:gap-12 
+        w-full max-w-5xl mx-auto
+        grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5
+        gap-6 sm:gap-8 lg:gap-12
         justify-items-center items-stretch pt-8
       ">
         {highlights.map((highlight, index) => {
@@ -86,7 +86,7 @@ export default function Highlight() {
               username={highlight.username}
               posterImg={`/${highlight.highlight_image_url}`}
               index={index}
-              playButton={playButton}
+              playButton="playB.png"
               playerImg={`/${highlight.player_image_url}`}
               onPlayClick={() => handlePlayVideo(highlight.highlight_url)}
               onClick={() =>
@@ -102,7 +102,7 @@ export default function Highlight() {
 
       <div className="w-full max-w-6xl flex justify-center md:justify-between items-center mt-4 px-4 gap-4">
         <div className="m-1 md:m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-3 py-1 md:px-6 md:py-2 shadow-md">
-          <CustomArrow side="left" to="/streamer" />
+          <CustomArrow side="left" to="/fan-favorite" />
         </div>
         <div className="m-1 md:m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-3 py-1 md:px-6 md:py-2 shadow-md">
           <CustomArrow side="right" to="/submit" />

@@ -22,9 +22,10 @@ export async function POST(request: Request){
                 igl_id,
                 talent_id,
                 streamer_id,
+                fav_player_id,
                 highlight_id
             ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
             )`,
             [
                 new Date().toISOString(),
@@ -39,6 +40,7 @@ export async function POST(request: Request){
                 submission.igl_id,
                 submission.talent_id,
                 submission.streamer_id,
+                submission.fav_player_id,
                 submission.highlight_id
             ]
         );

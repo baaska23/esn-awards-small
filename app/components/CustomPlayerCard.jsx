@@ -31,7 +31,7 @@ export default function CustomPlayer({sportImg, img, teamImg, username, name, on
                 <Image src={`/esport${sportImg}`} alt="sportsImg" width={64} height={18} className="object-contain sm:w-[80px] sm:h-[20px] lg:w-[110px] lg:h-[24px]" priority />
             </div>
             <div className="relative flex items-center justify-center rounded-2xl mt-4 mb-2 w-24 h-24 lg:w-32 lg:h-32">
-                <Image src={img} alt="img" fill className="object-contain p-1 sm:p-2" priority />
+                <Image src={`/esport${img}`} alt="img" fill className="object-contain p-1 sm:p-2" priority />
             </div>
             <div className="w-full h-7 bg-white/30 rounded-xl flex items-center justify-center font-bold text-gray-800 tracking-wide border border-gray-200 text-base sm:text-lg lg:text-[16px] lg:h-10">
                 <div className="relative w-7 h-7 md:w-12 md:h-12 lg:w-10 lg:h-10 flex-shrink-0 rounded-xl bg-white/30 border border-gray-200 overflow-hidden">

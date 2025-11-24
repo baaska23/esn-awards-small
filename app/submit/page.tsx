@@ -142,6 +142,7 @@ export default function Submit() {
       igl_id: payload.igl_id,
       talent_id: payload.talent_id,
       streamer_id: payload.streamer_id,
+      fav_player_id: payload.fav_player_id,
       highlight_id: payload.highlight_id
     };
 
@@ -259,7 +260,7 @@ export default function Submit() {
         </form>
       )}
 
-      <Image src={`/esport${esnLogo}`} alt="ESN logo" width={140} height={35} priority />
+      <Image src={`/esport/esn_logo.png`} alt="ESN logo" width={140} height={35} priority />
 
       <div className="w-full max-w-6xl flex justify-center items-center mt-4 px-4">
         <div className="m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-6 py-2 shadow-md">

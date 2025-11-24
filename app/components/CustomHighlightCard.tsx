@@ -48,7 +48,7 @@ export default function CustomHighlightCard({
           : "bg-white/20 border-white/20 hover:bg-white/30 hover:scale-102"
       }`}
       style={{
-        width: "80%",
+        width: "100%",
         maxWidth: "300px",
         height: "auto",
       }}
@@ -96,7 +96,7 @@ export default function CustomHighlightCard({
         >
           <div className="relative w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8">
             <Image 
-              src={`/esport${playButton}`} 
+              src={`/esport/${playButton}`} 
               alt="play" 
               fill
               className="object-contain" 

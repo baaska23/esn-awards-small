@@ -39,7 +39,7 @@ export default function Streamer() {
     setSelectedStreamerId(streamer_id);
     sessionStorage.setItem("streamer_id", JSON.stringify(streamer_id));
     setTimeout(() => {
-      router.push("/highlight");
+      router.push("/fan-favorite");
     }, 200);
   }
 
@@ -71,7 +71,7 @@ export default function Streamer() {
           <CustomArrow side="left" to="/talent" />
         </div>
         <div className="m-1 md:m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-3 py-1 md:px-6 md:py-2 shadow-md">
-          <CustomArrow side="right" to="/highlight" />
+          <CustomArrow side="right" to="/fan-favorite" />
         </div>
       </div>
     </div>
