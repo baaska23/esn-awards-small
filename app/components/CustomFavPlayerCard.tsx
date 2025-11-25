@@ -38,7 +38,7 @@ export default function CustomFavPlayerCard({
       px-3 py-3 lg:px-4 lg:py-4 gap-3 shadow-md
       bg-white/20 border-white/20 hover:bg-white/30 transition-all duration-300"
       style={{
-        width: "100%",
+        width: "80%",
         maxWidth: "320px",
         height: "auto",
       }}
@@ -57,7 +57,7 @@ export default function CustomFavPlayerCard({
               src={`/esport/${teamImg}`}
               alt={teamName}
               fill
-              className="object-cover rounded-lg"
+              className="object-contain rounded-lg"
               priority
             />
           </div>
@@ -92,7 +92,7 @@ export default function CustomFavPlayerCard({
             src={`/esport/${teamImg}`}
             alt={teamName}
             fill
-            className="object-cover rounded-lg"
+            className="object-contain rounded-lg"
             priority
           />
         </div>

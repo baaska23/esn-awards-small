@@ -68,7 +68,7 @@ export default function CustomHighlightCard({
             src={`/esport${playerImg}`} 
             alt="playerImg" 
             fill 
-            className="object-cover rounded-lg" 
+            className="object-contain rounded-lg" 
             priority 
           />
           <div className="absolute bottom-0 left-0 right-0 bg-white/30 backdrop-blur-sm py-2 px-3 rounded-2xl flex items-center justify-center font-bold text-gray-800 text-lg tracking-wide border border-gray-200">
