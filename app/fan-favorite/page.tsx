@@ -31,8 +31,16 @@ export default function FavoritePlayers() {
   const [data, setData] = useState<FavPlayer[]>([]);
   const [selectedFavId, setSelectedFavId] = useState<number | null>(null);
 
+  // Game type mapping based on team_id
+  const GAME_TYPE_MAP: { [key: number]: string } = {
+    1: "CS2",
+    5: "MLBB",
+    9: "PUBG",
+    // Add more mappings as needed
+  };
+
   useEffect(() => {
-    fetch('/esport/api/fan-favorite')
+    fetch('/mongolian-esports-awards/api/fan-favorite')
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -54,9 +62,17 @@ export default function FavoritePlayers() {
 
   data.forEach((fav) => {
     if (!teamMap.has(fav.team_id)) {
+      // Create display name with game type if applicable
+      let displayName = fav.team_name || `Team ${fav.team_id}`;
+      const gameType = GAME_TYPE_MAP[fav.team_id];
+      
+      if (gameType) {
+        displayName = `${displayName} / ${gameType} /`;
+      }
+
       teamMap.set(fav.team_id, {
         team_id: fav.team_id,
-        team_name: fav.team_name || `Team ${fav.team_id}`,
+        team_name: displayName,
         team_image_url: fav.team_image_url || "",
         players: []
       });
@@ -83,7 +99,7 @@ export default function FavoritePlayers() {
     <div
       className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]
+        bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
         bg-no-repeat bg-cover bg-center bg-fixed
       "
     >

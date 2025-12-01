@@ -15,7 +15,7 @@ export default function Highlight() {
   const [currentVideoUrl, setCurrentVideoUrl] = useState<string>("");
 
   useEffect(() => {
-    fetch('/esport/api/highlights')
+    fetch('/mongolian-esports-awards/api/highlights')
     .then((res) => res.json())
     .then((data) => {
       setData(data)
@@ -67,7 +67,7 @@ export default function Highlight() {
     <div
       className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]
+        bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
         bg-no-repeat bg-cover bg-center bg-fixed
       "
     >

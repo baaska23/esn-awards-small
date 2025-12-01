@@ -12,7 +12,7 @@ export default function Team() {
   const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/esport/api/mobile-teams')
+    fetch('/mongolian-esports-awards/api/mobile-teams')
     .then((res) => res.json())
     .then((data) => {
       console.log("Data in teams: ", data)
@@ -50,7 +50,7 @@ export default function Team() {
     <div
       className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]
+        bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
         bg-no-repeat bg-cover bg-center bg-fixed
       "
     >

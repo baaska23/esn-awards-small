@@ -12,7 +12,7 @@ export default function Streamer() {
   const [selectedStreamerId, setSelectedStreamerId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/esport/api/streamers')
+    fetch('/mongolian-esports-awards/api/streamers')
     .then((res) => res.json())
     .then((data) => {
       setData(data);
@@ -47,12 +47,12 @@ export default function Streamer() {
     <div
       className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]
+        bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
         bg-no-repeat bg-cover bg-center bg-fixed
       "
     >
       <CustomTitle />
-      <CustomHeader header1="STREAMER" header2="OF THE YEAR" />
+      <CustomHeader header1="GAMING STREAMER" header2="OF THE YEAR" />
       <div className="w-full max-w-6xl mx-auto grid grid-cols-3 grid-rows-2 gap-4 sm:gap-6 justify-items-center items-stretch lg:grid-cols-6 lg:grid-rows-1 pt-8">
         {streamers.map((player, index) => (
           <CustomStreamer

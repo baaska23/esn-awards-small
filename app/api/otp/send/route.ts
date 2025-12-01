@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         const identifier = type === 'email' ? email : phone;
         const app_name = "esnAwards";
         
-        const response = await fetch("http://10.21.68.207:10070/api/v1/otp/send", {
+        const response = await fetch("http://10.21.68.21/otp/api/v1/otp/send", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

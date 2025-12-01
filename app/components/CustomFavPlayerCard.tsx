@@ -40,21 +40,21 @@ export default function CustomFavPlayerCard({
       style={{
         width: "80%",
         maxWidth: "320px",
-        height: "auto",
+        minHeight: "170px", // <<< UPDATED for even height across all cards
       }}
     >
 
       {/* =============== DESKTOP =============== */}
       <div 
-        className="hidden md:flex justify-center items-center h-28"
+        className="hidden md:flex justify-center items-center h-32" // <<< UPDATED HEIGHT
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        {/* Image view (default) */}
+        {/* Default Image */}
         {!hover && (
           <div className="relative w-24 h-24 lg:w-28 lg:h-28">
             <Image
-              src={`/esport/${teamImg}`}
+              src={`/mongolian-esports-awards/${teamImg}`}
               alt={teamName}
               fill
               className="object-contain rounded-lg"
@@ -63,12 +63,12 @@ export default function CustomFavPlayerCard({
           </div>
         )}
 
-        {/* Hover view → Show player names */}
+        {/* Hover → Player Names */}
         {hover && (
           <div className="flex flex-col items-center gap-1 text-center">
-            <div className="text-sm font-bold mb-1">{teamName}</div>
+            <div className="text-sm font-bold mb-1 pt-2">{teamName}</div>
 
-            {players.slice(0, 5).map((player) => (
+            {players.slice(0, 6).map((player) => ( // <<< ALLOW 6 PLAYERS
               <div
                 key={player.fav_player_id}
                 onClick={() => onClick(player.fav_player_id)}
@@ -89,7 +89,7 @@ export default function CustomFavPlayerCard({
       <div className="flex md:hidden gap-3 cursor-pointer">
         <div className="relative w-30 h-30 shrink-0">
           <Image
-            src={`/esport/${teamImg}`}
+            src={`/mongolian-esports-awards/${teamImg}`}
             alt={teamName}
             fill
             className="object-contain rounded-lg"
@@ -102,7 +102,7 @@ export default function CustomFavPlayerCard({
             {teamName}
           </div>
 
-          {players.slice(0, 5).map((player) => (
+          {players.slice(0, 6).map((player) => ( // <<< ALSO 6 PLAYERS
             <div
               key={player.fav_player_id}
               onClick={() => onClick(player.fav_player_id)}

@@ -12,7 +12,7 @@ export default function Player() {
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/esport/api/pc-players')
+    fetch('/mongolian-esports-awards/api/pc-players')
     .then((res) => res.json())
     .then((data) => {
       setData(data);
@@ -52,13 +52,13 @@ export default function Player() {
     <div
       className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]
+        bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
         bg-no-repeat bg-cover bg-center bg-fixed
       "
     >
       <CustomTitle />
       <CustomHeader header1="PC PLAYER" header2="OF THE YEAR" />
-      <div className="w-full max-w-6xl mx-auto grid grid-cols-3 grid-rows-2 gap-4 gap-y-12 sm:gap-6 justify-items-center items-stretch lg:grid-cols-6 lg:grid-rows-1 pt-8">
+      <div className="w-full max-w-6xl mx-auto grid grid-cols-3 grid-rows-2 gap-4 gap-y-12 sm:gap-6 justify-items-center items-stretch  lg:grid-cols-5 lg:grid-rows-1 pt-8">
         {players.map((player, index) => (
           <CustomPlayerCard
             key={player.pc_player_id}

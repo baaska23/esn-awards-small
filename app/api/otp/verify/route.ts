@@ -13,7 +13,7 @@ export async function POST(request: Request) {
             );
         }
 
-        const response = await fetch("http://10.21.68.207:10070/api/v1/otp/verify", {
+        const response = await fetch("http://10.21.68.21/otp/api/v1/otp/verify", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

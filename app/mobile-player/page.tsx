@@ -12,7 +12,7 @@ export default function Player() {
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/esport/api/mobile-players')
+    fetch('/mongolian-esports-awards/api/mobile-players')
     .then((res) => res.json())
     .then((data) => {
       setData(data);
@@ -52,7 +52,7 @@ export default function Player() {
     <div
       className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]
+        bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
         bg-no-repeat bg-cover bg-center bg-fixed
       "
     >

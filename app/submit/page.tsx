@@ -96,7 +96,7 @@ export default function Submit() {
     let total = 0;
 
     try {
-      const res = await fetch(`/esport/api/check-register?identity=${encodeURIComponent(input)}&date=${today}`);
+      const res = await fetch(`/mongolian-esports-awards/api/check-register?identity=${encodeURIComponent(input)}&date=${today}`);
       if (res.ok) {
         const data = await res.json();
         total = data.total ?? 0;
@@ -155,7 +155,7 @@ export default function Submit() {
     }
 
     try {
-      const response = await fetch("/esport/api/submit", {
+      const response = await fetch("/mongolian-esports-awards/api/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -177,7 +177,7 @@ export default function Submit() {
     }
 
     try {
-      const response = await fetch("/esport/api/register", {
+      const response = await fetch("/mongolian-esports-awards/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -204,7 +204,7 @@ export default function Submit() {
       <div
         className="
           min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-          bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]
+          bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
           bg-no-repeat bg-cover bg-center bg-fixed
         "
       >
@@ -224,8 +224,8 @@ export default function Submit() {
       className={`
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
         ${isSubmit
-          ? "bg-[url('/esport/BG_MOBILE_3.jpg')] md:bg-[url('/esport/BG_DESKTOP_3.jpg')]"
-          : "bg-[url('/esport/BG_MOBILE_2.jpg')] md:bg-[url('/esport/BG_DESKTOP_2.jpg')]"}
+          ? "bg-[url('/mongolian-esports-awards/BG_MOBILE_3.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_3.jpg')]"
+          : "bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]"}
         bg-no-repeat bg-cover bg-center bg-fixed
       `}
     >
@@ -233,7 +233,7 @@ export default function Submit() {
 
       {isSubmit ? (
         <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-4 text-gray-800 text-xl font-semibold text-center">
-          Санал хураалтад идэвхитэй оролцсон таньд баярлалаа
+          Санал хураалтад идэвхтэй оролцсон танд баярлалаа. Та өдөрт нэг санал өгөх боломжтой.
         </div>
       ) : (
         <form
@@ -260,7 +260,7 @@ export default function Submit() {
         </form>
       )}
 
-      <Image src={`/esport/esn_logo.png`} alt="ESN logo" width={140} height={35} priority />
+      <Image src={`/mongolian-esports-awards/esn_logo.png`} alt="ESN logo" width={140} height={35} priority />
 
       <div className="w-full max-w-6xl flex justify-center items-center mt-4 px-4">
         <div className="m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-6 py-2 shadow-md">

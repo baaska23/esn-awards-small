@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const response = await fetch("http://10.21.68.207:10070/api/v1/otp/config");
+        const response = await fetch("http://10.21.68.21/otp/api/v1/otp/config");
         const result = await response.json();
 
         if (!response.ok || !result.success) {

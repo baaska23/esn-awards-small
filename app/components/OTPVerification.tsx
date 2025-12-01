@@ -27,7 +27,41 @@ export default function OTPVerification({
     setMessage("");
 
     try {
-      const response = await fetch("/esport/api/otp/send", {
+      const response = await fetch("/mongolian-esports-awards/api/otp/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type,
+          [type === "email" ? "email" : "phone"]: identifier,
+          app_name: "esnAwards"
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setMessage(data.message);
+      } else {
+        setError(data.error);
+      }
+    } catch (err) {
+      setError("Код илгээхэд алдаа гарлаа");
+      console.error(err);
+    } finally {
+      setIsSending(false);
+      
+    }
+  }
+
+  async function resendOTP() {
+    setIsSending(true);
+    setError("");
+    setMessage("");
+
+    try {
+      const response = await fetch("/mongolian-esports-awards/api/otp/resend", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +99,7 @@ export default function OTPVerification({
     setError("");
 
     try {
-      const response = await fetch("/esport/api/otp/verify", {
+      const response = await fetch("/mongolian-esports-awards/api/otp/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -150,7 +184,7 @@ export default function OTPVerification({
           </button>
 
           <button
-            onClick={sendOTP}
+            onClick={resendOTP}
             disabled={isSending}
             className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
