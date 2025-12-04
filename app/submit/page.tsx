@@ -72,7 +72,7 @@ export default function Submit() {
     }
 
     if (!input.trim()) {
-      alert("Имэйл хаяг эсвэл утасны дугаар оруулна уу.");
+      alert("Имэйл хаяг оруулна уу.");
       return;
     }
 
@@ -85,9 +85,9 @@ export default function Submit() {
     }
 
     if (detectedType === "sms") {
-      const cleanPhone = input.replace(/\D/g, "");
-      if (cleanPhone.length !== 8) {
-        alert("Утасны дугаар 8 оронтой байх ёстой.");
+      const phoneNumber = input.replace(/\D/g, "");
+      if (phoneNumber) {
+        alert("Зөвхөн имэйл хаягаар санал өгөх боломжтой.");
         return;
       }
     }
@@ -247,7 +247,7 @@ export default function Submit() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Имэйл хаяг эсвэл утасны дугаар"
+            placeholder="Имэйл хаяг"
             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4 text-black"
           />
           <button
@@ -262,11 +262,13 @@ export default function Submit() {
 
       <Image src={`/mongolian-esports-awards/esn_logo.png`} alt="ESN logo" width={140} height={35} priority />
 
-      <div className="w-full max-w-6xl flex justify-center items-center mt-4 px-4">
-        <div className="m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-6 py-2 shadow-md">
-          <CustomArrow side="left" to="/highlight" />
+      {!isSubmit && (
+        <div className="w-full max-w-6xl flex justify-center items-center mt-4 px-4">
+          <div className="m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-6 py-2 shadow-md">
+            <CustomArrow side="left" to="/highlight" />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

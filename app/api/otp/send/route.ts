@@ -3,6 +3,13 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
     try {
         const {email, phone, type} = await request.json();
+        console.log("Log nextjs: ", email, type, phone);
+        if(type === 'sms') {
+            return NextResponse.json(
+                {success: false, error: 'Dugaarar bolomjgui'},
+                {status: 400}
+            );
+        }
 
         if(!type || (type !== 'email' && type !== 'sms')) {
             return NextResponse.json(
@@ -18,14 +25,14 @@ export async function POST(request: Request) {
             )
         }
 
-        if(type === 'sms' && !phone) {
-            return NextResponse.json(
-                {success: false, error: 'Phone number is required'},
-                {status: 400}
-            )
-        }
+        // if(type === 'sms' && !phone) {
+        //     return NextResponse.json(
+        //         {success: false, error: 'Phone number is required'},
+        //         {status: 400}
+        //     )
+        // }
 
-        const identifier = type === 'email' ? email : phone;
+        const identifier = email;
         const app_name = "esnAwards";
         
         const response = await fetch("http://10.21.68.21/otp/api/v1/otp/send", {

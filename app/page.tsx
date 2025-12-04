@@ -3,8 +3,16 @@ import Image from "next/image";
 import CustomButton from "./components/CustomButton";
 import CustomTitle from "./components/CustomTitle";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      alert("Нийт 10 номинаци дээр санал өгснөөр таны санал баталгаажна.");
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
       className="
