@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { getClient } from "@/lib/db";
+import { getClient, getPool } from "@/lib/db";
 
 export async function GET() {
-    const client = getClient();
-    await client.connect();
+    const pool = getPool();
     
-    const result = await client.query(`
+    const result = await pool.query(`
         SELECT 
             team_id,
             fav_player_id,
@@ -17,6 +16,5 @@ export async function GET() {
         ORDER BY team_id, fav_player_id
     `, ['favs']);
     
-    await client.end();
     return NextResponse.json(result.rows ?? []);
 }

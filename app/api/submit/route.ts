@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { getClient } from '@/lib/db';
+import { getPool } from '@/lib/db';
 
 export async function POST(request: Request){
+    const pool = getPool();
+
     try{
         const submission = await request.json();
         console.log("submission: ", submission);
 
-        const client = getClient();
-        await client.connect();
-        await client.query(
+        await pool.query(
             `INSERT INTO esn.submissions (
                 timestamp, 
                 email, 
@@ -45,7 +45,6 @@ export async function POST(request: Request){
             ]
         );
 
-        await client.end();
         return NextResponse.json(
             { success: true, message: 'Submission saved' }
         );

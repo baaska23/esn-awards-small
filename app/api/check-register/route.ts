@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getClient } from '@/lib/db';
+import { getClient, getPool } from '@/lib/db';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -11,17 +11,14 @@ export async function GET(request: Request) {
   }
 
   try {
-    const client = getClient();
-    await client.connect();
+    const pool = getPool();
 
-    const result = await client.query(
+    const result = await pool.query(
       `SELECT COUNT(*) AS total FROM esn.voters WHERE identity = $1 AND last_updated::date = $2::date`,
       [identity, date]
     );
 
     console.log("result in check-register: ", result);
-
-    await client.end();
 
     return NextResponse.json({ total: parseInt(result.rows[0].total, 10) });
   } catch (error) {

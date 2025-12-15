@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getClient } from '@/lib/db';
+import { getClient, getPool } from '@/lib/db';
 
 export async function POST(request: Request){
     try{
         const registration = await request.json();
         console.log("registration: ", registration);
 
-        const client = getClient();
-        await client.connect();
-        await client.query(
+        const pool = getPool();
+        await pool.query(
             `INSERT INTO esn.voters (
                 last_updated, 
                 identity,
@@ -23,7 +22,6 @@ export async function POST(request: Request){
             ]
         );
 
-        await client.end();
         return NextResponse.json(
             { success: true, message: 'Registration saved' }
         );

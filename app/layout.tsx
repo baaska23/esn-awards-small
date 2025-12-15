@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import CustomTitle from "./components/CustomTitle";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,11 +20,53 @@ export const metadata: Metadata = {
   viewport: "width=device-width,initial-scale=1",
 };
 
+const POLL_DEADLINE = new Date("2025-12-14T23:59:59+08:00");
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const now = new Date();
+
+  const isPollClosed = now > POLL_DEADLINE;
+
+  console.log("root: ", isPollClosed);
+  if (isPollClosed) {
+    return (
+      <html>
+        <body>
+          <div
+            className="
+              font-sans min-h-screen p-8 pb-20 sm:p-20
+              bg-[url('/mongolian-esports-awards/BG_MOBILE_1.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_1.jpg')]
+              bg-no-repeat bg-cover bg-center bg-fixed
+              flex flex-col
+            "
+          >
+            <div className="pt-2">
+              <CustomTitle />
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-4 text-gray-800 text-xl font-semibold text-center max-w-2xl">
+                Санал хураалт хаагдлаа. Санал хураалтад идэвхтэй оролцсон танд
+                баярлалаа.
+              </div>
+            </div>
+            <div className="pb-2 flex justify-center">
+              <Image
+                src="/mongolian-esports-awards/esn_logo.png"
+                alt="ESN logo"
+                width={140}
+                height={35}
+                priority
+              />
+            </div>
+          </div>
+        </body>
+      </html>
+    );
+  }
   return (
     <html lang="en">
       <body

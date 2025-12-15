@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getClient } from '@/lib/db';
+import { getClient, getPool } from '@/lib/db';
 
 export async function GET() {
-  const client = getClient();
-  await client.connect();
-  const result = await client.query('SELECT * FROM esn.awards WHERE slug = $1 and sport_id =  $2', ['players', 2]);
-  await client.end();
+  const pool = getPool();
+  const result = await pool.query('SELECT * FROM esn.awards WHERE slug = $1 and sport_id =  $2', ['players', 2]);
   return NextResponse.json(result.rows ?? []);
 }
