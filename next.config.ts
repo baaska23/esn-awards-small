@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  basePath:"/adhjsahdashdhashdfhfhferhfshfhsnn",
+  basePath:"/mongolian-esports-awards",
   crossOrigin:"anonymous",
   images: {
     unoptimized: true

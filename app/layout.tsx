@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   viewport: "width=device-width,initial-scale=1",
 };
 
-const POLL_DEADLINE = new Date("2025-12-14T23:59:59+08:00");
+const POLL_DEADLINE = new Date("2026-12-14T23:59:59+08:00");
 
 export default function RootLayout({
   children,
