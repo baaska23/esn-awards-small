@@ -31,7 +31,7 @@ export default function Home() {
         initial={{ opacity: 0, scale: 0.75 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0 }}
-        className="bg-white/20 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-2 text-white text-xl font-bold"
+        className="bg-white/20 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-2 text-white text-xl font-thin"
       >
         Санал хураалт 2026.12.14 00:00 цагт хаагдана
       </motion.div>
