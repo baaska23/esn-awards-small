@@ -27,7 +27,7 @@ export default function OTPVerification({
     setMessage("");
 
     try {
-      const response = await fetch("/mongolian-esports-awards/api/otp/send", {
+      const response = await fetch("/mea/api/otp/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export default function OTPVerification({
     setMessage("");
 
     try {
-      const response = await fetch("/mongolian-esports-awards/api/otp/resend", {
+      const response = await fetch("/mea/api/otp/resend", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export default function OTPVerification({
     setError("");
 
     try {
-      const response = await fetch("/mongolian-esports-awards/api/otp/verify", {
+      const response = await fetch("/mea/api/otp/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -130,12 +130,12 @@ export default function OTPVerification({
   }
 
   return (
-    <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl p-6 max-w-md mx-auto">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">
+    <div className="glass rounded-3xl p-6 max-w-md mx-auto">
+      <h2 className="relative text-xl font-bold text-[#CFAA17] mb-4">
         {type === "email" ? "Имэйл" : "Утас"} баталгаажуулах
       </h2>
 
-      <p className="text-sm text-gray-700 mb-4">
+      <p className="relative text-sm text-white/80 mb-4">
         Баталгаажуулах код {identifier} руу илгээгдэх болно
       </p>
 
@@ -143,29 +143,32 @@ export default function OTPVerification({
         <button
           onClick={sendOTP}
           disabled={isSending}
-          className="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-lg mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="glow glass w-full text-[#CFAA17] font-semibold py-2 px-4 rounded-xl mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSending ? "Илгээж байна..." : "Код авах"}
         </button>
       )}
 
       {message && (
-        <div className="mb-4">
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        <div className="relative mb-4">
+          <div className="bg-green-500/15 border border-green-400/40 text-green-300 px-4 py-3 rounded-xl mb-4">
             {message}
           </div>
 
-          <input
-            type="text"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            placeholder="4 оронтой код"
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4 text-center text-2xl tracking-widest text-black"
-            maxLength={6}
-          />
+          {/* Inputs can't have ::before, so the glass edge lives on a wrapper */}
+          <div className="glass rounded-xl mb-4">
+            <input
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              placeholder="4 оронтой код"
+              className="relative w-full px-4 py-2 rounded-xl bg-transparent text-center text-2xl tracking-widest text-white placeholder:text-white/50 outline-none focus:ring-1 focus:ring-white/40"
+              maxLength={6}
+            />
+          </div>
 
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div className="bg-red-500/15 border border-red-400/40 text-red-300 px-4 py-3 rounded-xl mb-4">
               {error}
               {remaining !== null && remaining > 0 && (
                 <div className="text-sm mt-1">
@@ -178,7 +181,7 @@ export default function OTPVerification({
           <button
             onClick={verifyOTP}
             disabled={isLoading || otp.length !== 4}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg mb-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="glow glass w-full text-[#CFAA17] font-semibold py-2 px-4 rounded-xl mb-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Шалгаж байна..." : "Баталгаажуулах"}
           </button>
@@ -186,7 +189,7 @@ export default function OTPVerification({
           <button
             onClick={resendOTP}
             disabled={isSending}
-            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="glow glass w-full text-white font-semibold py-2 px-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Код дахин авах
           </button>
@@ -196,7 +199,7 @@ export default function OTPVerification({
       {onCancel && (
         <button
           onClick={onCancel}
-          className="w-full text-gray-600 hover:text-gray-800 text-sm mt-2"
+          className="relative w-full text-white/60 hover:text-white text-sm mt-2"
         >
           Буцах
         </button>

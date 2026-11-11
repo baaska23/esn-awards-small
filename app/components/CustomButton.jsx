@@ -6,7 +6,7 @@ export default function CustomButton({ children, to = "/" }) {
   return (
     <button
       onClick={() => router.push(to)}
-      className="flex items-center justify-center w-24 h-12 md:w-24 md:h-12 lg:w-32 lg:h-16 bg-gray-700 rounded-full text-white font-bold"
+      className="flex items-center justify-center w-24 h-12 md:w-24 md:h-12 lg:w-32 lg:h-16 bg-gray-700 rounded-full text-white font-bold glow"
     >
       {children}
     </button>

@@ -96,7 +96,7 @@ export default function Submit() {
     let total = 0;
 
     try {
-      const res = await fetch(`/mongolian-esports-awards/api/check-register?identity=${encodeURIComponent(input)}&date=${today}`);
+      const res = await fetch(`/mea/api/check-register?identity=${encodeURIComponent(input)}&date=${today}`);
       if (res.ok) {
         const data = await res.json();
         total = data.total ?? 0;
@@ -155,7 +155,7 @@ export default function Submit() {
     }
 
     try {
-      const response = await fetch("/mongolian-esports-awards/api/submit", {
+      const response = await fetch("/mea/api/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -177,7 +177,7 @@ export default function Submit() {
     }
 
     try {
-      const response = await fetch("/mongolian-esports-awards/api/register", {
+      const response = await fetch("/mea/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -204,8 +204,6 @@ export default function Submit() {
       <div
         className="
           min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-          bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
-          bg-no-repeat bg-cover bg-center bg-fixed
         "
       >
         <CustomTitle />
@@ -221,50 +219,49 @@ export default function Submit() {
 
   return (
     <div
-      className={`
+      className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        ${isSubmit
-          ? "bg-[url('/mongolian-esports-awards/BG_MOBILE_3.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_3.jpg')]"
-          : "bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]"}
-        bg-no-repeat bg-cover bg-center bg-fixed
-      `}
+      "
     >
       <CustomTitle />
 
       {isSubmit ? (
-        <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-4 text-gray-800 text-xl font-semibold text-center">
+        <div className="glass rounded-3xl px-6 py-4 text-white text-xl font-semibold text-center">
           Санал хураалтад идэвхтэй оролцсон танд баярлалаа. Та өдөрт нэг санал өгөх боломжтой.
         </div>
       ) : (
         <form
-          className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-4 w-full max-w-md"
+          className="glass rounded-3xl px-6 py-4 w-full max-w-md"
           onSubmit={e => {
             e.preventDefault();
             startVerification();
           }}
         >
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Имэйл хаяг"
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4 text-black"
-          />
+          {/* Inputs can't have ::before, so the glass edge lives on a wrapper */}
+          <div className="glass rounded-xl mb-4">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Имэйл хаяг"
+              className="relative w-full px-4 py-2 rounded-xl bg-transparent text-white placeholder:text-white/50 outline-none focus:ring-1 focus:ring-white/40"
+            />
+          </div>
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-900 hover:bg-blue-800 text-white text-xl font-semibold py-2 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="glow glass w-full text-[#CFAA17] text-xl font-semibold py-2 px-6 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "ИЛГЭЭЖ БАЙНА..." : "САНАЛ ИЛГЭЭХ"}
           </button>
         </form>
       )}
 
-      <Image src={`/mongolian-esports-awards/esn_logo.png`} alt="ESN logo" width={140} height={35} priority />
+      <Image src={`/mea/esn_logo.png`} alt="ESN logo" width={140} height={35} priority />
 
       {!isSubmit && (
         <div className="w-full max-w-6xl flex justify-center items-center mt-4 px-4">
-          <div className="m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-6 py-2 shadow-md">
+          <div className="m-2 glow glass rounded-2xl px-6 py-2">
             <CustomArrow side="left" to="/highlight" />
           </div>
         </div>

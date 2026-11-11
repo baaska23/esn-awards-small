@@ -40,12 +40,12 @@ export default function CustomHighlightCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       exit={{ opacity: 0, y: 30 }}
-      className={`flex flex-row sm:flex-row md:flex-col backdrop-blur-sm border rounded-2xl 
-      px-2 py-2 md:px-3 md:py-3 lg:px-4 lg:py-4 items-center gap-2 shadow-md cursor-pointer 
+      className={`glass flex flex-row sm:flex-row md:flex-col rounded-2xl 
+      px-2 py-2 md:px-3 md:py-3 lg:px-4 lg:py-4 items-center gap-2 cursor-pointer 
       transition-all duration-300 ${
         isSelected
-          ? "bg-yellow-300 shadow-xl scale-105"
-          : "bg-white/20 border-white/20 hover:bg-white/30 hover:scale-102"
+          ? "glass-selected scale-105"
+          : "hover:scale-102"
       }`}
       style={{
         width: "100%",
@@ -65,14 +65,14 @@ export default function CustomHighlightCard({
       <div className="flex flex-col items-center gap-2 shrink-0">
         <div className="relative w-24 h-32 md:w-28 md:h-36 lg:w-40 lg:h-40">
           <Image 
-            src={`/mongolian-esports-awards${playerImg}`} 
+            src={`/mea${playerImg}`} 
             alt="playerImg" 
             fill 
             className="object-contain rounded-lg" 
             priority 
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-white/30 backdrop-blur-sm py-2 px-3 rounded-2xl flex items-center justify-center font-bold text-gray-800 text-lg tracking-wide border border-gray-200">
-            <span className="font-bold text-gray-900 text-base md:text-lg lg:text-xl tracking-wide uppercase">
+          <div className="absolute bottom-0 left-0 right-0 bg-black/30 backdrop-blur-sm py-2 px-3 rounded-2xl flex items-center justify-center font-bold text-white text-lg tracking-wide border border-white/20">
+            <span className="font-bold text-white text-base md:text-lg lg:text-xl tracking-wide uppercase">
               {username}
             </span>
           </div>
@@ -82,7 +82,7 @@ export default function CustomHighlightCard({
       <div className="flex items-center flex-1 w-full gap-1">
         <div className="relative flex-1 aspect-video rounded-lg overflow-hidden min-w-0">
           <Image 
-            src={`/mongolian-esports-awards${posterImg}`} 
+            src={`/mea${posterImg}`} 
             alt={`${username} highlight`} 
             fill 
             className="object-cover" 
@@ -96,7 +96,7 @@ export default function CustomHighlightCard({
         >
           <div className="relative w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8">
             <Image 
-              src={`/mongolian-esports-awards/${playButton}`} 
+              src={`/mea/${playButton}`} 
               alt="play" 
               fill
               className="object-contain" 

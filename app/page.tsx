@@ -17,12 +17,10 @@ export default function Home() {
     <div
       className="
         font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20
-        bg-[url('/mongolian-esports-awards/BG_MOBILE_1.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_1.jpg')]
-        bg-no-repeat bg-cover bg-center bg-fixed
       "
     >
       <Image
-        src={`/mongolian-esports-awards/esn_logo.png`}
+        src={`/mea/esn_logo.png`}
         alt="Next.js logo"
         width={140}
         height={35}
@@ -33,9 +31,9 @@ export default function Home() {
         initial={{ opacity: 0, scale: 0.75 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0 }}
-        className="bg-white/20 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-2 text-gray-700 text-xl font-bold"
+        className="bg-white/20 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-2 text-white text-xl font-bold"
       >
-        Санал хураалт 2025.12.14 00:00 цагт хаагдана
+        Санал хураалт 2026.12.14 00:00 цагт хаагдана
       </motion.div>
       <CustomButton to="/pc-team">ЭХЛЭХ</CustomButton>
     </div>

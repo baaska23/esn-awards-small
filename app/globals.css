@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
@@ -122,6 +122,162 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* Frosted glass panel tinted #403F72, with a thin gradient edge
+   that catches light at the top-left and bottom-right corners */
+.glass {
+  position: relative;
+  background: rgba(64, 63, 114, 0.5);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  box-shadow: inset 0 0 24px rgba(255, 255, 255, 0.025);
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.06) 40%,
+    rgba(255, 255, 255, 0.06) 65%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Selected glass card: gold tint, gold outline and halo */
+.glass.glass-selected {
+  background: rgba(207, 170, 23, 0.22);
+  box-shadow:
+    0 0 0 1.5px #cfaa17,
+    0 0 24px rgba(207, 170, 23, 0.45),
+    inset 0 0 24px rgba(255, 255, 255, 0.04);
+}
+
+/* Page-wide light that follows the cursor; sits between the background
+   video (-z-10) and the content. Moved by GlowTracker. */
+.cursor-spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -5;
+  width: 260px;
+  height: 260px;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.05) 40%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 0.4s ease;
+  will-change: transform;
+}
+
+@media (hover: none) {
+  .cursor-spotlight {
+    display: none;
+  }
+}
+
+/* Interactive button: a soft white spotlight follows the cursor.
+   --x/--y are set per element by GlowTracker. */
+@property --edge {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.glow {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease,
+    --edge 0.35s ease;
+}
+
+.glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background:
+    radial-gradient(
+      140px circle at var(--x, 50%) var(--y, 50%),
+      rgba(255, 255, 255, 0.35),
+      rgba(255, 255, 255, 0.08) 45%,
+      transparent 70%
+    );
+  mix-blend-mode: screen;
+}
+
+/* On glass buttons the edge also lights up where the cursor is */
+.glass.glow::before {
+  background:
+    radial-gradient(
+      90px circle at var(--x, 50%) var(--y, 50%),
+      rgba(255, 255, 255, calc(var(--edge) * 0.9)),
+      transparent 70%
+    ),
+    linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.06) 40%,
+      rgba(255, 255, 255, 0.06) 65%,
+      rgba(255, 255, 255, 0.22) 100%
+    );
+}
+
+@media (hover: hover) {
+  .glow:hover {
+    --edge: 1;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow:
+      0 0 24px rgba(255, 255, 255, 0.18),
+      0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+  .glow:hover::after {
+    opacity: 1;
+  }
+}
+
+.glow:active {
+  transform: scale(0.97);
+}
+
+.glow:disabled {
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.glow:disabled::after {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow,
+  .glow:hover,
+  .glow:active {
+    transform: none;
+  }
 }
 
 @layer base {

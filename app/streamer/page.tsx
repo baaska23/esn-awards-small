@@ -12,7 +12,7 @@ export default function Streamer() {
   const [selectedStreamerId, setSelectedStreamerId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/mongolian-esports-awards/api/streamers')
+    fetch('/mea/api/streamers')
     .then((res) => res.json())
     .then((data) => {
       setData(data);
@@ -47,8 +47,6 @@ export default function Streamer() {
     <div
       className="
         min-h-screen grid items-center justify-items-center p-6 sm:p-12 gap-2
-        bg-[url('/mongolian-esports-awards/BG_MOBILE_2.jpg')] md:bg-[url('/mongolian-esports-awards/BG_DESKTOP_2.jpg')]
-        bg-no-repeat bg-cover bg-center bg-fixed
       "
     >
       <CustomTitle />
@@ -67,10 +65,10 @@ export default function Streamer() {
       </div>
 
       <div className="w-full max-w-6xl flex justify-center md:justify-between items-center mt-4 px-4 gap-4">
-        <div className="m-1 md:m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-3 py-1 md:px-6 md:py-2 shadow-md">
+        <div className="m-1 md:m-2 glow glass rounded-2xl px-3 py-1 md:px-6 md:py-2">
           <CustomArrow side="left" to="/talent" />
         </div>
-        <div className="m-1 md:m-2 bg-white/40 backdrop-blur-lg border border-white/20 rounded-2xl px-3 py-1 md:px-6 md:py-2 shadow-md">
+        <div className="m-1 md:m-2 glow glass rounded-2xl px-3 py-1 md:px-6 md:py-2">
           <CustomArrow side="right" to="/fan-favorite" />
         </div>
       </div>
