@@ -5,6 +5,7 @@ import CustomTitle from "./components/CustomTitle";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { notify } from "@/lib/notify";
+import { imageSrc } from "@/lib/image";
 
 export default function Home() {
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function Home() {
       "
     >
       <Image
-        src={`/mea/esn_logo.png`}
+        src={imageSrc("esn_logo.png")}
         alt="Next.js logo"
         width={140}
         height={35}

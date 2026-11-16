@@ -3,7 +3,6 @@ import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
 import CustomHighlightCard from "../components/CustomHighlightCard";
-import playButton from "../../public/playB.png"
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -79,7 +78,6 @@ export default function Highlight() {
               username={highlight.username}
               posterImg={`/${highlight.highlight_image_url}`}
               index={index}
-              playButton="playB.png"
               playerImg={`/${highlight.player_image_url}`}
               onPlayClick={() => handlePlayVideo(highlight.highlight_url)}
               onClick={() =>

@@ -9,7 +9,6 @@ interface CustomHighlightCardProps {
   playerImg: string;
   username: string;
   posterImg: any;
-  playButton: any;
   to?: string;
   onClick: () => void;
   onPlayClick: () => void;
@@ -21,7 +20,6 @@ export default function CustomHighlightCard({
   playerImg,
   username,
   posterImg,
-  playButton,
   to,
   onClick,
   onPlayClick,

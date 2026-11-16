@@ -22,7 +22,7 @@ One branch per awards season: `v2` is the 2026 season. Commit season work there,
 ## Architecture
 
 ### basePath
-`next.config.ts` sets `basePath: "/mea"`. `router.push("/coach")` and `<Link>` get the prefix automatically, but **raw `fetch` URLs and CSS `url(...)` / `<Image src>` strings do not** — they are hardcoded as `/mea/api/...` and `/mea/...`. Keep this prefix when adding fetches or assets. For nominee images use `imageSrc()` (see Images) instead of building paths by hand.
+`next.config.ts` sets `basePath: "/mea"`. `router.push("/coach")` and `<Link>` get the prefix automatically, but **raw `fetch` URLs and CSS `url(...)` / `<Image src>` strings do not** — they are hardcoded as `/mea/api/...` and `/mea/...`. Keep this prefix when adding fetches or assets in `public/`. For images use `imageSrc()` (see Images) instead of building paths by hand.
 
 ### Voting flow (client-side wizard)
 Every page under `app/` is a `"use client"` step. The order is fixed by each page's `router.push` / `CustomArrow to=`:
@@ -49,7 +49,7 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 - `supabase/seed_2026.sql` — 2026 nominees, tournaments and achievements (from Liquipedia). Talent, streamer and highlight rows are `SAMPLE` placeholders to replace. `supabase/test_achievements.sql` adds `[TEST] ...` tournaments/achievements for UI testing, with a cleanup block at the bottom.
 
 ### Images
-`imageSrc()` in `lib/image.ts` resolves an image value from `esn.awards`: a full `https://` URL is used as-is (Supabase Storage, public bucket `esn-awards-2026`: `https://<project-ref>.supabase.co/storage/v1/object/public/esn-awards-2026/<file>`), a plain filename is served from `public/` as `/mea/<file>`. A leading `/` is tolerated, so pages can keep passing `` `/${row.player_image_url}` ``. All card components use it. The bucket has no storage policies: public read by URL only; uploads/deletes only via the dashboard or the service_role key.
+All images live in the public Supabase Storage bucket `esn-awards-2026`, not in `public/` (which only keeps `fonts/` and `new-bg/`, the background photos/videos). `imageSrc()` in `lib/image.ts` resolves an image value: a full `https://` URL is used as-is, a plain filename (`cs.png`, `esn_logo.png`, or a value from `esn.awards`) becomes `IMAGE_BUCKET_URL/<file>`, and an empty value falls back to `placeholder.png` in the bucket. A leading `/` is tolerated, so pages can keep passing `` `/${row.player_image_url}` ``. To add an image, upload it to the bucket and store just the filename in the DB. The bucket has no storage policies: public read by URL only; uploads/deletes only via the dashboard or the service_role key.
 
 ### Nominee cards and notices
 - `NomineeGrid` (`count` prop) + `.nominee-grid` in `globals.css` lay out nominee cards: 2 per row on phones, balanced rows on desktop (up to 5 in one row, more split evenly, e.g. 10 → 5 + 5). Designed for up to 10 nominees per award.

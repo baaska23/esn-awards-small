@@ -5,6 +5,7 @@ import BackgroundVideo from "./components/BackgroundVideo";
 import GlowTracker from "./components/GlowTracker";
 import Notifier from "./components/Notifier";
 import Image from "next/image";
+import { imageSrc } from "@/lib/image";
 
 export const metadata: Metadata = {
   title: "ESN Awards 2026",
@@ -46,7 +47,7 @@ export default function RootLayout({
             </div>
             <div className="pb-2 flex justify-center">
               <Image
-                src="/mea/esn_logo.png"
+                src={imageSrc("esn_logo.png")}
                 alt="ESN logo"
                 width={140}
                 height={35}

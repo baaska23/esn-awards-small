@@ -1,7 +1,7 @@
 "use client";
 import CustomTitle from "../components/CustomTitle";
 import Image from "next/image";
-import esnLogo from "../../public/esn_logo.png";
+import { imageSrc } from "@/lib/image";
 import { useState } from "react";
 import CustomArrow from "../components/CustomArrow";
 import OTPVerification from "../components/OTPVerification";
@@ -231,7 +231,7 @@ export default function Submit() {
         </form>
       )}
 
-      <Image src={`/mea/esn_logo.png`} alt="ESN logo" width={140} height={35} priority />
+      <Image src={imageSrc("esn_logo.png")} alt="ESN logo" width={140} height={35} priority />
 
       {!isSubmit && (
         <div className="w-full max-w-6xl flex justify-center items-center mt-4 px-4">
