@@ -2,6 +2,7 @@
 import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
+import NomineeGrid from "../components/NomineeGrid";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import CustomStreamer from "../components/CustomStreamerCard";
@@ -51,7 +52,7 @@ export default function Talent() {
     >
       <CustomTitle />
       <CustomHeader header1="TALENT" header2="OF THE YEAR" />
-      <div className="w-full max-w-6xl mx-auto grid grid-cols-3 grid-rows-2 gap-4 sm:gap-6 justify-items-center items-stretch lg:grid-cols-6 lg:grid-rows-1 pt-8">
+      <NomineeGrid count={talents.length}>
         {talents.map((player, index) => (
           <CustomStreamer
             key={player.talent_id}
@@ -62,7 +63,7 @@ export default function Talent() {
             onClick={() => handleSelect(player.talent_id)}
           />
         ))}
-      </div>
+      </NomineeGrid>
 
       <div className="w-full max-w-6xl flex justify-center md:justify-between items-center mt-4 px-4 gap-4">
         <div className="m-1 md:m-2 glow glass rounded-2xl px-3 py-1 md:px-6 md:py-2">

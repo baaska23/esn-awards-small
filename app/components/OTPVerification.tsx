@@ -1,4 +1,5 @@
 "use client";
+import { InlineNotice } from "./Notifier";
 import { useState } from "react";
 
 interface OTPVerificationProps {
@@ -149,11 +150,14 @@ export default function OTPVerification({
         </button>
       )}
 
+      {/* Sending failed before any code went out */}
+      {!message && error && (
+        <InlineNotice type="error" className="mb-4">{error}</InlineNotice>
+      )}
+
       {message && (
         <div className="relative mb-4">
-          <div className="bg-green-500/15 border border-green-400/40 text-green-300 px-4 py-3 rounded-xl mb-4">
-            {message}
-          </div>
+          <InlineNotice type="success" className="mb-4">{message}</InlineNotice>
 
           {/* Inputs can't have ::before, so the glass edge lives on a wrapper */}
           <div className="glass rounded-xl mb-4">
@@ -168,14 +172,14 @@ export default function OTPVerification({
           </div>
 
           {error && (
-            <div className="bg-red-500/15 border border-red-400/40 text-red-300 px-4 py-3 rounded-xl mb-4">
+            <InlineNotice type="error" className="mb-4">
               {error}
               {remaining !== null && remaining > 0 && (
-                <div className="text-sm mt-1">
+                <div className="mt-1 text-xs font-normal text-white/60">
                   {remaining} оролдлого үлдсэн
                 </div>
               )}
-            </div>
+            </InlineNotice>
           )}
 
           <button

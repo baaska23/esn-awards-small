@@ -4,11 +4,12 @@ import CustomButton from "./components/CustomButton";
 import CustomTitle from "./components/CustomTitle";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { notify } from "@/lib/notify";
 
 export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
-      alert("Нийт 10 номинаци дээр санал өгснөөр таны санал баталгаажна.");
+      notify("Нийт 10 номинаци дээр санал өгснөөр таны санал баталгаажна.", "info", 7000);
     }, 300);
     return () => clearTimeout(timer);
   }, []);

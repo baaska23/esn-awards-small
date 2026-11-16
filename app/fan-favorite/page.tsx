@@ -104,12 +104,7 @@ export default function FavoritePlayers() {
       <CustomTitle />
       <CustomHeader header1="FAN FAVORITE PLAYER" header2="OF THE YEAR" />
       
-      <div className="
-        w-full max-w-6xl mx-auto
-        grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-        gap-6 sm:gap-8
-        justify-items-center items-stretch pt-8
-      ">
+      <div className="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-items-center items-stretch pt-6">
         {teamGroups.map((team, index) => (
           <CustomFavPlayerCard
             key={team.team_id}

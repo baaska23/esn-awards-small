@@ -3,6 +3,7 @@ import "./globals.css";
 import CustomTitle from "./components/CustomTitle";
 import BackgroundVideo from "./components/BackgroundVideo";
 import GlowTracker from "./components/GlowTracker";
+import Notifier from "./components/Notifier";
 import Image from "next/image";
 
 export const metadata: Metadata = {
@@ -65,6 +66,7 @@ export default function RootLayout({
       >
         <BackgroundVideo />
         <GlowTracker />
+        <Notifier />
         {children}
       </body>
     </html>

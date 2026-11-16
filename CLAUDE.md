@@ -51,6 +51,11 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 ### Images
 `imageSrc()` in `lib/image.ts` resolves an image value from `esn.awards`: a full `https://` URL is used as-is (Supabase Storage, public bucket `esn-awards-2026`: `https://<project-ref>.supabase.co/storage/v1/object/public/esn-awards-2026/<file>`), a plain filename is served from `public/` as `/mea/<file>`. A leading `/` is tolerated, so pages can keep passing `` `/${row.player_image_url}` ``. All card components use it. The bucket has no storage policies: public read by URL only; uploads/deletes only via the dashboard or the service_role key.
 
+### Nominee cards and notices
+- `NomineeGrid` (`count` prop) + `.nominee-grid` in `globals.css` lay out nominee cards: 2 per row on phones, balanced rows on desktop (up to 5 in one row, more split evenly, e.g. 10 → 5 + 5). Designed for up to 10 nominees per award.
+- `CustomPlayerCard`, `CustomTeamCard`, `CustomStreamerCard` share `NomineeCardShell` (single glass layer, selected state, click/Enter/Space). Inside a card only the medal is a button; team logos are plain images, and the game logo sits on a light label because `pubg_logo.png` is black on transparent.
+- Never use `alert()`. Call `notify(message, "error" | "success" | "info")` from `lib/notify.ts`; `<Notifier />` in `app/layout.tsx` shows it as a glass toast. For messages inside a form use `<InlineNotice>` (exported from `Notifier.tsx`).
+
 ### Achievements pop-up
 `CustomPlayerCard` (PC player, mobile player, coach, IGL pages) has a medal button that calls `onAchievementsClick`; it stops propagation so it never selects/votes. The page stores the row in `achievementsPlayer` state and renders `AchievementsModal`, which fetches `GET /api/achievements?player_id=` (newest first) and passes the list to `CustomAchievementCard` (summary + all rows + empty state). Pages must keep `player_id` in their row type for this.
 

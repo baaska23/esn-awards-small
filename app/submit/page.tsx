@@ -5,6 +5,8 @@ import esnLogo from "../../public/esn_logo.png";
 import { useState } from "react";
 import CustomArrow from "../components/CustomArrow";
 import OTPVerification from "../components/OTPVerification";
+import { InlineNotice } from "../components/Notifier";
+import { notify } from "@/lib/notify";
 import { useRouter } from "next/navigation";
 
 export default function Submit() {
@@ -61,18 +63,18 @@ export default function Submit() {
 
     let isEmptyPoll = Object.keys(payload).length === 0;
     if (isEmptyPoll) {
-      alert("Та эхлээд санал өгөх хэсгээс саналуудаа бөглөнө үү.");
+      notify("Та эхлээд санал өгөх хэсгээс саналуудаа бөглөнө үү.");
       return;
     }
 
     let isInComplete = Object.keys(payload).length < 7;
     if (isInComplete) {
-      alert("Санал асуулгыг бүрэн бөглөнө үү.");
+      notify("Санал асуулгыг бүрэн бөглөнө үү.");
       return;
     }
 
     if (!input.trim()) {
-      alert("Имэйл хаяг оруулна уу.");
+      notify("Имэйл хаяг оруулна уу.");
       return;
     }
 
@@ -80,14 +82,14 @@ export default function Submit() {
     setType(detectedType);
 
     if (detectedType === "email" && !input.includes("@")) {
-      alert("Зөв имэйл хаяг оруулна уу.");
+      notify("Зөв имэйл хаяг оруулна уу.");
       return;
     }
 
     if (detectedType === "sms") {
       const phoneNumber = input.replace(/\D/g, "");
       if (phoneNumber) {
-        alert("Зөвхөн имэйл хаягаар санал өгөх боломжтой.");
+        notify("Зөвхөн имэйл хаягаар санал өгөх боломжтой.");
         return;
       }
     }
@@ -105,7 +107,7 @@ export default function Submit() {
     }
 
     if (total >= 1) {
-      alert("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
+      notify("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
       setIsLoading(false);
       return;
     }
@@ -159,13 +161,13 @@ export default function Submit() {
         setIsSubmit(true);
         sessionStorage.clear();
       } else if (response.status === 409) {
-        alert("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
+        notify("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
       } else {
-        alert("Алдаа гарлаа. Дахин оролдоно уу.");
+        notify("Алдаа гарлаа. Дахин оролдоно уу.");
       }
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Алдаа гарлаа. Дахин оролдоно уу.");
+      notify("Алдаа гарлаа. Дахин оролдоно уу.");
     } finally {
       setIsLoading(false);
     }
@@ -198,9 +200,9 @@ export default function Submit() {
       <CustomTitle />
 
       {isSubmit ? (
-        <div className="glass rounded-3xl px-6 py-4 text-white text-xl font-semibold text-center">
+        <InlineNotice type="success" className="glass w-full max-w-md !rounded-2xl !px-5 !py-4 !text-base">
           Санал хураалтад идэвхтэй оролцсон танд баярлалаа. Та өдөрт нэг санал өгөх боломжтой.
-        </div>
+        </InlineNotice>
       ) : (
         <form
           className="glass rounded-3xl px-6 py-4 w-full max-w-md"

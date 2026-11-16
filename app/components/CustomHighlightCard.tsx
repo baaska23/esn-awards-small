@@ -3,6 +3,7 @@ import Image from "next/image";
 import { imageSrc } from "@/lib/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { Play } from "lucide-react";
 
 interface CustomHighlightCardProps {
   playerImg: string;
@@ -39,14 +40,10 @@ export default function CustomHighlightCard({
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
+      transition={{ delay: Math.min(index, 12) * 0.05, duration: 0.35 }}
       exit={{ opacity: 0, y: 30 }}
-      className={`glass flex flex-row sm:flex-row md:flex-col rounded-2xl 
-      px-2 py-2 md:px-3 md:py-3 lg:px-4 lg:py-4 items-center gap-2 cursor-pointer 
-      transition-all duration-300 ${
-        isSelected
-          ? "glass-selected scale-105"
-          : "hover:scale-102"
+      className={`nominee-card glass !flex-row md:!flex-col p-2.5 md:p-3 items-center gap-3 ${
+        isSelected ? "glass-selected" : ""
       }`}
       style={{
         width: "100%",
@@ -69,11 +66,11 @@ export default function CustomHighlightCard({
             src={imageSrc(playerImg)} 
             alt="playerImg" 
             fill 
-            className="object-contain rounded-lg" 
+            className="object-contain rounded-xl" 
             priority 
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-black/30 backdrop-blur-sm py-2 px-3 rounded-2xl flex items-center justify-center font-bold text-white text-lg tracking-wide border border-white/20">
-            <span className="font-bold text-white text-base md:text-lg lg:text-xl tracking-wide uppercase">
+          <div className="absolute inset-x-0 bottom-0 rounded-xl bg-black/45 px-2 py-1.5 text-center backdrop-blur-sm">
+            <span className="block truncate text-sm font-semibold uppercase tracking-wide text-white md:text-[15px]">
               {username}
             </span>
           </div>
@@ -81,7 +78,7 @@ export default function CustomHighlightCard({
       </div>
       
       <div className="flex items-center flex-1 w-full gap-1">
-        <div className="relative flex-1 aspect-video rounded-lg overflow-hidden min-w-0">
+        <div className="relative flex-1 aspect-video rounded-xl overflow-hidden min-w-0">
           <Image 
             src={imageSrc(posterImg)} 
             alt={`${username} highlight`} 
@@ -91,18 +88,13 @@ export default function CustomHighlightCard({
           />
         </div>
         <button
+          type="button"
           onClick={handlePlayButtonClick}
-          className="relative w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 shrink-0 bg-yellow-400 hover:bg-yellow-500 rounded-lg flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 active:scale-95"
-          aria-label="Play video"
+          onKeyDown={(e) => e.stopPropagation()}
+          className="relative flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#cfaa17] text-[#1c1b3a] shadow-lg transition hover:scale-110 hover:bg-[#e0bb2a] active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+          aria-label="Бичлэг үзэх"
         >
-          <div className="relative w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8">
-            <Image 
-              src={imageSrc(playButton)} 
-              alt="play" 
-              fill
-              className="object-contain" 
-            />
-          </div>
+          <Play className="ml-0.5 h-5 w-5 fill-current" aria-hidden="true" />
         </button>
       </div>
     </motion.div>

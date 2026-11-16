@@ -1,46 +1,29 @@
 import Image from "next/image";
 import { imageSrc } from "@/lib/image";
-import {motion} from "framer-motion"
+import NomineeCardShell from "./NomineeCardShell";
 
 export default function CustomTeamCard({ sportImg, img, name, isSelected, onClick, index }) {
-    console.log("sportImg:", sportImg, "img:", img);
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            exit={{ opacity: 0, y: 30 }}
-            className={`glass flex flex-col items-center rounded-xl p-0 transition-all duration-300
-                w-[110px] h-[150px] pt-2 pb-0
-                sm:w-[120px] sm:h-[180px] sm:pt-3
-                lg:w-[160px] lg:h-[210px] lg:pt-4
-                ${isSelected 
-                    ? 'glass-selected scale-105' 
-                    : 'hover:scale-102'
-                }`
-            }
-            role="button"
-            tabIndex={0}
-            onClick={onClick}
-            onKeyDown={e => {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    onClick?.();
-                }
-            }}
-        >
-            {/* Top bar */}
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 glass rounded-xl flex items-center justify-center sm:w-24 sm:h-7 lg:w-32 lg:h-8">
-                <Image src={imageSrc(sportImg)} alt="sportsImg" width={64} height={18} className="object-contain sm:w-[80px] sm:h-[20px] lg:w-[110px] lg:h-[24px]" priority />
+        <NomineeCardShell index={index} isSelected={isSelected} onClick={onClick}>
+            {/* Game logo */}
+            {/* A light label (not glass) so dark logos like PUBG stay readable */}
+            <div className="mx-auto mt-3 rounded-md bg-white/85 px-2 py-[3px]">
+                <div className="relative h-3.5 w-14 sm:h-4 sm:w-16">
+                    <Image src={imageSrc(sportImg)} alt="" fill sizes="64px" className="object-contain" priority />
+                </div>
             </div>
-            {/* Logo */}
-            <div className="relative flex items-center justify-center rounded-2xl mt-4 mb-2 w-24 h-24 lg:w-32 lg:h-32">
-                <Image src={imageSrc(img)} alt="img" fill className="object-contain p-1 sm:p-2" priority />
+
+            {/* Team logo */}
+            <div className="relative mx-5 mt-3 aspect-square">
+                <Image src={imageSrc(img)} alt={name ?? ""} fill sizes="176px" className="object-contain" priority />
             </div>
-            {/* Team name */}
-            <div className="w-full h-7 bg-white/10 rounded-xl flex items-center justify-center font-bold text-white tracking-wide border border-white/15 text-[10px] sm:text-sm lg:text-[14px] lg:h-10">
-                {name}
+
+            {/* Team name: up to two lines, height reserved so cards stay level */}
+            <div className="mt-3 flex min-h-[3.25rem] items-center justify-center border-t border-white/10 px-2.5 py-2">
+                <p className="line-clamp-2 text-center text-[13px] font-semibold leading-tight tracking-wide text-white sm:text-sm">
+                    {name}
+                </p>
             </div>
-        </motion.div>
+        </NomineeCardShell>
     );
 }

@@ -2,6 +2,8 @@
 import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
+import NomineeGrid from "../components/NomineeGrid";
+import { InlineNotice } from "../components/Notifier";
 import CustomTeamCard from "../components/CustomTeamCard";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -69,15 +71,14 @@ export default function Team() {
     
       
       {error && (
-        <div className="text-red-500 text-xl bg-white/20 p-4 rounded-lg">
-          Error: {error} 2swAZq
-        </div>
+        <InlineNotice type="error" className="glass w-full max-w-md">
+          Мэдээлэл ачаалж чадсангүй. Дахин оролдоно уу.
+        </InlineNotice>
       )}
       
-      <div className="w-full max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 gap-y-12 sm:gap-6 justify-items-center items-stretch pt-8">
+      <NomineeGrid count={teams.length}>
           {teams.length > 0 ? (
             teams.map((team, index) => {
-              console.log("sport_image_url", `/${team.sport_image_url}`)
               return(
               <CustomTeamCard
                   key={team.pc_team_id}
@@ -91,12 +92,12 @@ export default function Team() {
             )
           ) : (
             !loading && !error && (
-              <div className="col-span-full text-white text-xl">
-                No teams found
+              <div className="w-full text-center text-sm text-white/70">
+                Нэр дэвшигч олдсонгүй
               </div>
             )
           )}
-      </div>
+      </NomineeGrid>
 
       <div className="w-full max-w-6xl flex justify-center md:justify-between items-center mt-4 px-4 gap-4">
         <div className="m-1 md:m-2 glow glass rounded-2xl px-3 py-1 md:px-6 md:py-2">

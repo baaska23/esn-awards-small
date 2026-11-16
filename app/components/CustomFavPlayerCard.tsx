@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { imageSrc } from "@/lib/image";
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 interface Player {
   fav_player_id: number;
@@ -19,105 +18,60 @@ interface CustomFavPlayerCardProps {
   index: number;
 }
 
+// One team with its players as selectable chips. The team logo and name are
+// a heading only; the chips are the controls.
 export default function CustomFavPlayerCard({
   teamImg,
   teamName,
   players,
   onClick,
   selectedPlayerId,
-  index
+  index,
 }: CustomFavPlayerCardProps) {
-  const [hover, setHover] = useState(false);
+  const hasSelected = players.some((p) => p.fav_player_id === selectedPlayerId);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      exit={{ opacity: 0, y: 30 }}
-      className="glass flex flex-col rounded-2xl 
-      px-3 py-3 lg:px-4 lg:py-4 gap-3 transition-all duration-300"
-      style={{
-        width: "80%",
-        maxWidth: "320px",
-        minHeight: "170px", // <<< UPDATED for even height across all cards
-      }}
+      exit={{ opacity: 0, y: 24 }}
+      transition={{ delay: Math.min(index, 12) * 0.05, duration: 0.35 }}
+      className={`glass flex h-full w-full max-w-sm flex-col gap-3 rounded-[1.25rem] p-4 transition-shadow duration-300 ${
+        hasSelected ? "glass-selected" : ""
+      }`}
     >
-
-      {/* =============== DESKTOP =============== */}
-      <div 
-        className="hidden md:flex justify-center items-center h-32" // <<< UPDATED HEIGHT
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
-        {/* Default Image */}
-        {!hover && (
-          <div className="relative w-24 h-24 lg:w-28 lg:h-28">
-            <Image
-              src={imageSrc(teamImg)}
-              alt={teamName}
-              fill
-              className="object-contain rounded-lg"
-              priority
-            />
-          </div>
-        )}
-
-        {/* Hover → Player Names */}
-        {hover && (
-          <div className="flex flex-col items-center gap-1 text-center">
-            <div className="text-sm font-bold text-[#CFAA17] mb-1 pt-2">{teamName}</div>
-
-            {players.slice(0, 6).map((player) => ( // <<< ALLOW 6 PLAYERS
-              <div
-                key={player.fav_player_id}
-                onClick={() => onClick(player.fav_player_id)}
-                className={`text-sm cursor-pointer hover:underline ${
-                  selectedPlayerId === player.fav_player_id
-                    ? "text-[#CFAA17] font-semibold"
-                    : "text-white"
-                }`}
-              >
-                {player.username}
-              </div>
-            ))}
-          </div>
-        )}
+      {/* Team heading */}
+      <div className="flex items-center gap-3">
+        <div className="relative h-11 w-11 shrink-0">
+          <Image src={imageSrc(teamImg)} alt="" fill sizes="44px" className="object-contain" priority />
+        </div>
+        <h3 className="min-w-0 flex-1 line-clamp-2 text-sm font-semibold leading-tight tracking-wide text-[#cfaa17]">
+          {teamName}
+        </h3>
       </div>
 
-      {/* =============== MOBILE =============== */}
-      <div className="flex md:hidden gap-3 cursor-pointer">
-        <div className="relative w-30 h-30 shrink-0">
-          <Image
-            src={imageSrc(teamImg)}
-            alt={teamName}
-            fill
-            className="object-contain rounded-lg"
-            priority
-          />
-        </div>
-
-        <div className="flex-1 flex flex-col gap-1 justify-center">
-          <div className="font-bold text-[#CFAA17] text-sm mb-1">
-            {teamName}
-          </div>
-
-          {players.slice(0, 6).map((player) => ( // <<< ALSO 6 PLAYERS
-            <div
+      {/* Players */}
+      <div className="flex flex-wrap gap-2 border-t border-white/10 pt-3">
+        {players.map((player) => {
+          const isSelected = selectedPlayerId === player.fav_player_id;
+          return (
+            <button
               key={player.fav_player_id}
+              type="button"
+              aria-pressed={isSelected}
               onClick={() => onClick(player.fav_player_id)}
-              className={`text-xs cursor-pointer hover:underline ${
-                selectedPlayerId === player.fav_player_id
-                  ? "text-[#CFAA17] font-bold"
-                  : "text-white"
-              }`}
+              className={`relative cursor-pointer rounded-full border px-3 py-1.5 text-[13px] font-medium transition
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
+                  isSelected
+                    ? "border-[#cfaa17] bg-[#cfaa17] text-[#1c1b3a]"
+                    : "border-white/15 bg-white/5 text-white hover:border-white/30 hover:bg-white/15"
+                }`}
             >
               {player.username}
-            </div>
-          ))}
-        </div>
+            </button>
+          );
+        })}
       </div>
-
     </motion.div>
   );
 }

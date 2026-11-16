@@ -324,3 +324,89 @@ body {
     @apply bg-background text-foreground;
   }
 }
+/* ------------------------------------------------------------------
+   Nominee grid: centred rows of cards, sized for up to 10 nominees.
+   Phones: 2 per row. Tablets: as many as fit. Desktop: --cols per row
+   (set by NomineeGrid so e.g. 10 nominees split 5 + 5, not 6 + 4).
+   ------------------------------------------------------------------ */
+.nominee-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem 0.75rem;
+  width: 100%;
+  margin-inline: auto;
+  padding-top: 1.5rem;
+}
+
+.nominee-grid > * {
+  width: calc((100% - 0.75rem) / 2);
+  max-width: 11rem;
+}
+
+@media (min-width: 640px) {
+  .nominee-grid {
+    gap: 1.5rem 1.25rem;
+  }
+  .nominee-grid > * {
+    width: 9.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nominee-grid {
+    gap: 2rem 1.5rem;
+    max-width: calc(var(--cols, 5) * 11rem + (var(--cols, 5) - 1) * 1.5rem);
+  }
+  .nominee-grid > * {
+    width: 11rem;
+  }
+}
+
+/* Nominee card: one glass layer, lifts slightly on hover */
+.nominee-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  outline: none;
+  transition:
+    translate 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    scale 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+@media (hover: hover) {
+  .nominee-card:hover {
+    translate: 0 -4px;
+    background: rgba(78, 77, 134, 0.55);
+    box-shadow:
+      inset 0 0 24px rgba(255, 255, 255, 0.04),
+      0 14px 32px rgba(0, 0, 0, 0.28);
+  }
+  .nominee-card.glass-selected:hover {
+    background: rgba(207, 170, 23, 0.26);
+    box-shadow:
+      0 0 0 1.5px #cfaa17,
+      0 0 28px rgba(207, 170, 23, 0.5),
+      0 14px 32px rgba(0, 0, 0, 0.28);
+  }
+}
+
+.nominee-card:focus-visible {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7);
+}
+
+.nominee-card.glass-selected {
+  scale: 1.03;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nominee-card,
+  .nominee-card:hover {
+    translate: none;
+    scale: none;
+  }
+}

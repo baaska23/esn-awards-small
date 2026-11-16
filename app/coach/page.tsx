@@ -2,6 +2,7 @@
 import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
+import NomineeGrid from "../components/NomineeGrid";
 import CustomPlayerCard from "../components/CustomPlayerCard";
 import AchievementsModal, { type AchievementsPlayer } from "../components/AchievementsModal";
 import { useRouter } from "next/navigation";
@@ -58,7 +59,7 @@ export default function Coach() {
     >
       <CustomTitle />
       <CustomHeader header1="COACH" header2="OF THE YEAR" />
-      <div className="w-full max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 gap-y-12 sm:gap-6 justify-items-center items-stretch pt-8">
+      <NomineeGrid count={coaches.length}>
         {coaches.map((coach, index) => (
           <CustomPlayerCard
             key={coach.coach_id}
@@ -73,7 +74,7 @@ export default function Coach() {
             onAchievementsClick={() => setAchievementsPlayer(coach)}
           />
         ))}
-      </div>
+      </NomineeGrid>
 
       <div className="w-full max-w-6xl flex justify-center md:justify-between items-center mt-4 px-4 gap-4">
         <div className="m-1 md:m-2 glow glass rounded-2xl px-3 py-1 md:px-6 md:py-2">

@@ -1,39 +1,21 @@
 import Image from "next/image"
 import { imageSrc } from "@/lib/image";
-import {motion} from "framer-motion"
+import NomineeCardShell from "./NomineeCardShell";
 
 export default function CustomStreamer({img, username, onClick, isSelected, index}) {
     return(
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            exit={{ opacity: 0, y: 30 }}
-            className={`glass flex flex-col items-center rounded-xl p-0 transition-all duration-300
-                w-[110px] h-[150px] pt-2 pb-0
-                sm:w-[30px] sm:h-[180px] sm:pt-3
-                lg:w-[160px] lg:h-[210px] lg:pt-4
-                ${isSelected 
-                    ? 'glass-selected scale-105' 
-                    : 'hover:scale-102'
-                }`
-            }
-            role="button"
-            tabIndex={0}
-            onClick={onClick}
-            onKeyDown={e => {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    onClick?.();
-                }
-            }}
-        >
-            <div className="relative flex items-center justify-center rounded-2xl mt-4 mb-2 w-24 h-24 lg:w-32 lg:h-32">
-                <Image src={imageSrc(img)} alt="img" fill className="object-contain p-1 sm:p-2" priority />
+        <NomineeCardShell index={index} isSelected={isSelected} onClick={onClick}>
+            {/* Photo */}
+            <div className="relative mx-3 mt-3 aspect-square">
+                <Image src={imageSrc(img)} alt={username ?? ""} fill sizes="176px" className="rounded-xl object-contain object-bottom" priority />
             </div>
-            <div className="w-full h-7 bg-white/10 rounded-xl flex items-center justify-center font-bold text-white tracking-wide border border-white/15 text-[10px] sm:text-sm lg:text-[16px] lg:h-10">
-                {username}
+
+            {/* Name: up to two lines, height reserved so cards stay level */}
+            <div className="mt-2.5 flex min-h-[3.25rem] items-center justify-center border-t border-white/10 px-2.5 py-2">
+                <p className="line-clamp-2 text-center text-[13px] font-semibold leading-tight tracking-wide text-white sm:text-sm">
+                    {username}
+                </p>
             </div>
-        </motion.div>
+        </NomineeCardShell>
     )
 }

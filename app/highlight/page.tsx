@@ -71,12 +71,7 @@ export default function Highlight() {
     >
       <CustomTitle />
       <CustomHeader header1="HIGHLIGHT" header2="OF THE YEAR" />
-      <div className="
-        w-full max-w-5xl mx-auto
-        grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5
-        gap-6 sm:gap-8 lg:gap-12
-        justify-items-center items-stretch pt-8
-      ">
+      <div className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 justify-items-center items-stretch pt-6">
         {highlights.map((highlight, index) => {
           return (
             <CustomHighlightCard
