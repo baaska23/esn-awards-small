@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { LIMITS, clientIp, rateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
     try {
@@ -27,6 +28,13 @@ export async function POST(request: Request) {
 
         const identifier = type === 'email' ? email : phone;
         const app_name = "esnAwards";
+
+        // Shares the send buckets, so resend can't be used to bypass them.
+        const limited = await rateLimit([
+            [LIMITS.otpSendEmail, identifier],
+            [LIMITS.otpSendIp, clientIp(request)],
+        ]);
+        if (limited) return limited;
         
         const response = await fetch("http://10.21.68.21/otp/api/v1/otp/resend", {
             method: "POST",

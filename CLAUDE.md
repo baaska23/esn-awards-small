@@ -38,6 +38,9 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 3. Shows `OTPVerification`, which calls `/api/otp/send|resend|verify`. These routes proxy to an internal OTP service at `http://10.21.68.21/otp/api/v1/...` (app_name `esnAwards`); it's only reachable from the deployment network.
 4. On verify, `/api/otp/verify` returns a `voteToken` (15-minute JWT signed with `JWT_SECRET`, subject = normalized identity, `lib/vote-token.ts`). `POST /api/submit` rejects with 401 unless the token is valid for the submitted email, then inserts into `esn.voters` and `esn.submissions` in one transaction. `UNIQUE (identity, vote_date)` on `esn.voters` is the real once-per-day guard; a violation returns 409.
 
+### Rate limiting
+`lib/rate-limit.ts`: fixed-window counters in `esn.rate_limits` (keys prefixed `mea:`), upserted atomically. `check-register`, `otp/send`, `otp/resend` (shares the send buckets), `otp/verify` and `submit` call `rateLimit([[LIMITS.x, subject], ...])` and return its 429 (Mongolian message + `Retry-After`) if set. Per-email limits are tight; per-IP limits are loose because mobile carriers share IPs (CGNAT). The IP is the rightmost `X-Forwarded-For` entry (or `X-Real-IP`), so it assumes exactly one trusted reverse proxy in front of the app; with no header, per-IP limits are skipped. If the limiter's query fails, the request is allowed. Tune numbers in `LIMITS`.
+
 ### Data layer
 - `lib/db.ts` — `getPool()` returns a lazily-created singleton `pg.Pool` (preferred); `getClient()` creates a one-off `Client` (still used by `check-email`/`check-phone`). Config from env: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`; SSL is on unless `DB_SSL=false` (Supabase requires it).
 - `supabase/schema.sql` — full DDL for the Supabase database (sets DB time zone to Asia/Ulaanbaatar, enables RLS with no policies).

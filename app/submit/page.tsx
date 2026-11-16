@@ -101,6 +101,10 @@ export default function Submit() {
       if (res.ok) {
         const data = await res.json();
         total = data.total ?? 0;
+      } else if (res.status === 429) {
+        notify("Хэт олон оролдлого хийлээ. Түр хүлээгээд дахин оролдоно уу.");
+        setIsLoading(false);
+        return;
       }
     } catch (e) {
       total = 0;
@@ -162,6 +166,8 @@ export default function Submit() {
         sessionStorage.clear();
       } else if (response.status === 409) {
         notify("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
+      } else if (response.status === 429) {
+        notify("Хэт олон оролдлого хийлээ. Түр хүлээгээд дахин оролдоно уу.");
       } else if (response.status === 401) {
         notify("Баталгаажуулалтын хугацаа дууссан. Кодоо дахин авна уу.");
       } else {

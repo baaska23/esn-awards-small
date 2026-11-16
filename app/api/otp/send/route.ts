@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { LIMITS, clientIp, rateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
     try {
@@ -34,6 +35,12 @@ export async function POST(request: Request) {
 
         const identifier = email;
         const app_name = "esnAwards";
+
+        const limited = await rateLimit([
+            [LIMITS.otpSendEmail, identifier],
+            [LIMITS.otpSendIp, clientIp(request)],
+        ]);
+        if (limited) return limited;
         
         const response = await fetch("http://10.21.68.21/otp/api/v1/otp/send", {
             method: "POST",

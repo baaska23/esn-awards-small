@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { signVoteToken } from "@/lib/vote-token";
+import { LIMITS, clientIp, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
     try {
@@ -13,6 +14,12 @@ export async function POST(request: Request) {
                 {status: 400}
             );
         }
+
+        const limited = await rateLimit([
+            [LIMITS.otpVerifyEmail, identifier],
+            [LIMITS.otpVerifyIp, clientIp(request)],
+        ]);
+        if (limited) return limited;
 
         const response = await fetch("http://10.21.68.21/otp/api/v1/otp/verify", {
             method: "POST",

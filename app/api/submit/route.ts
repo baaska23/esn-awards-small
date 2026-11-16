@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 import { getPool } from '@/lib/db';
 import { normalizeIdentity, verifyVoteToken } from '@/lib/vote-token';
+import { LIMITS, clientIp, rateLimit } from '@/lib/rate-limit';
 
 // Postgres error code for a unique-constraint violation.
 const UNIQUE_VIOLATION = '23505';
 
 export async function POST(request: Request){
+    const limited = await rateLimit([[LIMITS.submitIp, clientIp(request)]]);
+    if (limited) return limited;
+
     const pool = getPool();
     const client = await pool.connect();
 

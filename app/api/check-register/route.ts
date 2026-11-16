@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getClient, getPool } from '@/lib/db';
+import { getPool } from '@/lib/db';
+import { LIMITS, clientIp, rateLimit } from '@/lib/rate-limit';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -8,6 +9,9 @@ export async function GET(request: Request) {
   if (!identity) {
     return NextResponse.json({ error: 'Missing identity' }, { status: 400 });
   }
+
+  const limited = await rateLimit([[LIMITS.checkIp, clientIp(request)]]);
+  if (limited) return limited;
 
   try {
     const pool = getPool();
@@ -20,8 +24,6 @@ export async function GET(request: Request) {
          AND vote_date = (now() AT TIME ZONE 'Asia/Ulaanbaatar')::date`,
       [identity]
     );
-
-    console.log("result in check-register: ", result);
 
     return NextResponse.json({ total: parseInt(result.rows[0].total, 10) });
   } catch (error) {
