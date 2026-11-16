@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { signVoteToken } from "@/lib/vote-token";
 
 export async function POST(request: Request) {
     try {
@@ -34,7 +35,9 @@ export async function POST(request: Request) {
         return NextResponse.json({
             success: true,
             message: 'OTP verified',
-            verified: true
+            verified: true,
+            // Required by /api/submit as proof of this verification.
+            voteToken: signVoteToken(identifier)
         });
     } catch (error) {
         console.error('Error verifying OTP:', error);

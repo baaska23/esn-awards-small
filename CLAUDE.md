@@ -36,7 +36,7 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 1. Checks completeness (count of sessionStorage keys) and that input is an email (SMS is disabled both client-side and in `/api/otp/send`).
 2. `GET /api/check-register?identity=` — early check for **one vote per identity per day** (Ulaanbaatar day, computed server-side) against `esn.voters.vote_date`.
 3. Shows `OTPVerification`, which calls `/api/otp/send|resend|verify`. These routes proxy to an internal OTP service at `http://10.21.68.21/otp/api/v1/...` (app_name `esnAwards`); it's only reachable from the deployment network.
-4. On verify: `POST /api/submit` inserts into `esn.voters` and `esn.submissions` in one transaction. `UNIQUE (identity, vote_date)` on `esn.voters` is the real once-per-day guard; a violation returns 409.
+4. On verify, `/api/otp/verify` returns a `voteToken` (15-minute JWT signed with `JWT_SECRET`, subject = normalized identity, `lib/vote-token.ts`). `POST /api/submit` rejects with 401 unless the token is valid for the submitted email, then inserts into `esn.voters` and `esn.submissions` in one transaction. `UNIQUE (identity, vote_date)` on `esn.voters` is the real once-per-day guard; a violation returns 409.
 
 ### Data layer
 - `lib/db.ts` — `getPool()` returns a lazily-created singleton `pg.Pool` (preferred); `getClient()` creates a one-off `Client` (still used by `check-email`/`check-phone`). Config from env: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`; SSL is on unless `DB_SSL=false` (Supabase requires it).
@@ -46,7 +46,7 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 - Each category's vote id column (`pc_player_id`, `coach_id`, `igl_id`, `fav_player_id`, …) holds the person's `esn.players.id` (or the team id for team categories), so vote results join back to `esn.players`. Every person row in `esn.awards` also carries `player_id`.
 - `esn.players` — one row per nominee/coach; ids are chosen explicitly (2026 seed: `1xx` CS2, `2xx` PUBG Mobile, `3xx` MLBB).
 - `esn.tournaments` (`event_month` must be the 1st of a month) and `esn.achievements` (`achievement_type` is `tournament_place` with `placement > 0`, or `mvp` with `placement` NULL; at most one MVP per tournament).
-- `supabase/seed_2026.sql` — 2026 nominees, tournaments and achievements (from Liquipedia). Talent, streamer and highlight rows are `SAMPLE` placeholders to replace. `supabase/test_achievements.sql` adds `[TEST] ...` tournaments/achievements for UI testing, with a cleanup block at the bottom.
+- `supabase/seed_2026.sql` — 2026 nominees, tournaments and achievements (from Liquipedia). Talent, streamer and highlight rows are `SAMPLE` placeholders to replace.
 
 ### Images
 All images live in the public Supabase Storage bucket `esn-awards-2026`, not in `public/` (which only keeps `fonts/` and `new-bg/`, the background photos/videos). `imageSrc()` in `lib/image.ts` resolves an image value: a full `https://` URL is used as-is, a plain filename (`cs.png`, `esn_logo.png`, or a value from `esn.awards`) becomes `IMAGE_BUCKET_URL/<file>`, and an empty value falls back to `placeholder.png` in the bucket. A leading `/` is tolerated, so pages can keep passing `` `/${row.player_image_url}` ``. To add an image, upload it to the bucket and store just the filename in the DB. The bucket has no storage policies: public read by URL only; uploads/deletes only via the dashboard or the service_role key.
@@ -60,7 +60,7 @@ All images live in the public Supabase Storage bucket `esn-awards-2026`, not in 
 `CustomPlayerCard` (PC player, mobile player, coach, IGL pages) has a medal button that calls `onAchievementsClick`; it stops propagation so it never selects/votes. The page stores the row in `achievementsPlayer` state and renders `AchievementsModal`, which fetches `GET /api/achievements?player_id=` (newest first) and passes the list to `CustomAchievementCard` (summary + all rows + empty state). Pages must keep `player_id` in their row type for this.
 
 ### Auth
-`lib/auth.ts` + `/api/login` implement a JWT admin login against `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `JWT_SECRET` env vars. No current page or route consumes the token.
+`lib/auth.ts` + `/api/login` implement a JWT admin login against `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `JWT_SECRET` env vars. No current page or route consumes the admin token. `JWT_SECRET` is also required for voting (vote tokens).
 
 ### Poll deadline
 `app/layout.tsx` has `POLL_DEADLINE`; after it passes, the root layout replaces the whole app with a "voting closed" screen. The home page (`app/page.tsx`) shows the closing date as separate hardcoded text — update both for a new awards season.

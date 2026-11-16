@@ -17,9 +17,9 @@ export default function Submit() {
   const [type, setType] = useState<"email" | "sms">("email");
   const router = useRouter();
 
-  function handleVerified() {
+  function handleVerified(voteToken: string) {
     setShowOtp(false);
-    submitVote();
+    submitVote(voteToken);
   }
 
   function detectInputType(value: string): "email" | "sms" {
@@ -115,7 +115,7 @@ export default function Submit() {
     setShowOtp(true);
   }
 
-  async function submitVote() {
+  async function submitVote(voteToken: string) {
     const payload: Record<string, unknown> = {};
     for (let i = 0; i < sessionStorage.length; i++) {
       const key = sessionStorage.key(i);
@@ -134,7 +134,7 @@ export default function Submit() {
       timestamp: new Date().toISOString(),
       email: type === "email" ? input : null,
       phone_number: type === "sms" ? input.replace(/\D/g, "") : null,
-      verified: true,
+      voteToken,
       pc_team_id: payload.pc_team_id,
       mobile_team_id: payload.mobile_team_id,
       pc_player_id: payload.pc_player_id,
@@ -162,6 +162,8 @@ export default function Submit() {
         sessionStorage.clear();
       } else if (response.status === 409) {
         notify("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
+      } else if (response.status === 401) {
+        notify("Баталгаажуулалтын хугацаа дууссан. Кодоо дахин авна уу.");
       } else {
         notify("Алдаа гарлаа. Дахин оролдоно уу.");
       }

@@ -5,7 +5,7 @@ import { useState } from "react";
 interface OTPVerificationProps {
   type: "email" | "sms";
   identifier: string;
-  onVerified: () => void;
+  onVerified: (voteToken: string) => void;
   onCancel?: () => void;
 }
 
@@ -115,7 +115,7 @@ export default function OTPVerification({
       const data = await response.json();
 
       if (data.success) {
-        onVerified();
+        onVerified(data.voteToken);
       } else {
         setError(data.error);
         if (data.remaining !== undefined) {

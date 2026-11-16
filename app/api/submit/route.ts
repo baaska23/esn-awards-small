@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getPool } from '@/lib/db';
+import { normalizeIdentity, verifyVoteToken } from '@/lib/vote-token';
 
 // Postgres error code for a unique-constraint violation.
 const UNIQUE_VIOLATION = '23505';
@@ -10,13 +11,19 @@ export async function POST(request: Request){
 
     try{
         const submission = await request.json();
-        console.log("submission: ", submission);
-
-        const identity = String(submission.email ?? submission.phone_number ?? '').trim().toLowerCase();
+        const identity = normalizeIdentity(submission.email ?? submission.phone_number);
         if (!identity) {
             return NextResponse.json(
                 { success: false, error: 'Missing email' },
                 { status: 400 }
+            );
+        }
+
+        // Only accept a vote backed by a fresh OTP verification for this identity.
+        if (!verifyVoteToken(submission.voteToken, identity)) {
+            return NextResponse.json(
+                { success: false, error: 'OTP verification required' },
+                { status: 401 }
             );
         }
 
@@ -52,7 +59,7 @@ export async function POST(request: Request){
             [
                 submission.email,
                 submission.phone_number,
-                submission.verified,
+                true, // verified: guaranteed by the vote token check above
                 submission.pc_team_id,
                 submission.mobile_team_id,
                 submission.pc_player_id,
