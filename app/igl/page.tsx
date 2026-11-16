@@ -3,6 +3,7 @@ import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
 import CustomPlayerCard from "../components/CustomPlayerCard";
+import AchievementsModal, { type AchievementsPlayer } from "../components/AchievementsModal";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -10,6 +11,7 @@ export default function Igl() {
   const router = useRouter();
   const [data, setData] = useState<any[]>([]);
   const [selectedIglId, setSelectedIglId] = useState<number | null>(null);
+  const [achievementsPlayer, setAchievementsPlayer] = useState<AchievementsPlayer | null>(null);
 
   useEffect(() => {
     fetch('/mea/api/igls')
@@ -23,6 +25,7 @@ export default function Igl() {
     sport_id: number,
     team_id: number,
     igl_id: number,
+    player_id: number,
     username: string,
     fullname: string,
     player_image_url: string,
@@ -68,6 +71,7 @@ export default function Igl() {
             index={index}
             isSelected={selectedIglId === player.igl_id}
             onClick={() => handleSelect(player.igl_id)}
+            onAchievementsClick={() => setAchievementsPlayer(player)}
           />
         ))}
       </div>
@@ -80,6 +84,8 @@ export default function Igl() {
           <CustomArrow side="right" to="/talent" />
         </div>
       </div>
+
+      <AchievementsModal player={achievementsPlayer} onClose={() => setAchievementsPlayer(null)} />
     </div>
   );
 }

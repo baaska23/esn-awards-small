@@ -3,6 +3,7 @@ import CustomTitle from "../components/CustomTitle";
 import CustomHeader from "../components/CustomHeader";
 import CustomArrow from "../components/CustomArrow";
 import CustomPlayerCard from "../components/CustomPlayerCard";
+import AchievementsModal, { type AchievementsPlayer } from "../components/AchievementsModal";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -10,6 +11,7 @@ export default function Coach() {
   const router = useRouter();
   const [data, setData] = useState<any[]>([]);
   const [selectedCoachId, setSelectedCoachId] = useState<number | null>(null);
+  const [achievementsPlayer, setAchievementsPlayer] = useState<AchievementsPlayer | null>(null);
 
   useEffect(() => {
     fetch('/mea/api/coaches')
@@ -22,6 +24,7 @@ export default function Coach() {
   const coaches = (data ?? []) as {
     sport_id: number,
     coach_id: number,
+    player_id: number,
     username: string,
     fullname: string,
     player_image_url: string,
@@ -67,6 +70,7 @@ export default function Coach() {
             index={index}
             isSelected={selectedCoachId === coach.coach_id}
             onClick={() => handleSelect(coach.coach_id)}
+            onAchievementsClick={() => setAchievementsPlayer(coach)}
           />
         ))}
       </div>
@@ -79,6 +83,8 @@ export default function Coach() {
           <CustomArrow side="right" to="/igl" />
         </div>
       </div>
+
+      <AchievementsModal player={achievementsPlayer} onClose={() => setAchievementsPlayer(null)} />
     </div>
   );
 }
