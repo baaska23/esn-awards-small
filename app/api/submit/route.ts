@@ -2,9 +2,19 @@ import { NextResponse } from 'next/server';
 import { getPool } from '@/lib/db';
 import { normalizeIdentity, verifyVoteToken } from '@/lib/vote-token';
 import { LIMITS, clientIp, rateLimit } from '@/lib/rate-limit';
+import { VOTE_CATEGORIES, missingCategories, toVoteId } from '@/lib/vote-categories';
 
 // Postgres error code for a unique-constraint violation.
 const UNIQUE_VIOLATION = '23505';
+
+// One row of booleans: is each submitted id a nominee of its own category?
+// $1..$10 follow VOTE_CATEGORIES order. Column names come from that fixed
+// list, never from the request.
+const NOMINEE_CHECK_SQL = `SELECT ${VOTE_CATEGORIES.map((c, i) =>
+    `EXISTS (SELECT 1 FROM esn.awards WHERE slug = '${c.slug}'` +
+    (c.sportId ? ` AND sport_id = ${c.sportId}` : '') +
+    ` AND ${c.key} = $${i + 1}) AS ${c.key}`
+).join(', ')}`;
 
 export async function POST(request: Request){
     const limited = await rateLimit([[LIMITS.submitIp, clientIp(request)]]);
@@ -28,6 +38,26 @@ export async function POST(request: Request){
             return NextResponse.json(
                 { success: false, error: 'OTP verification required' },
                 { status: 401 }
+            );
+        }
+
+        // Every category must have an answer...
+        const missing = missingCategories(submission);
+        if (missing.length) {
+            return NextResponse.json(
+                { success: false, error: 'Incomplete vote', missing: missing.map((c) => c.key) },
+                { status: 400 }
+            );
+        }
+        const ids = VOTE_CATEGORIES.map((c) => toVoteId(submission[c.key]) as number);
+
+        // ...and each answer must be a nominee of that category.
+        const check = await client.query(NOMINEE_CHECK_SQL, ids);
+        const invalid = VOTE_CATEGORIES.filter((c) => !check.rows[0][c.key]).map((c) => c.key);
+        if (invalid.length) {
+            return NextResponse.json(
+                { success: false, error: 'Invalid nominee', invalid },
+                { status: 400 }
             );
         }
 
@@ -64,16 +94,7 @@ export async function POST(request: Request){
                 submission.email,
                 submission.phone_number,
                 true, // verified: guaranteed by the vote token check above
-                submission.pc_team_id,
-                submission.mobile_team_id,
-                submission.pc_player_id,
-                submission.mobile_player_id,
-                submission.coach_id,
-                submission.igl_id,
-                submission.talent_id,
-                submission.streamer_id,
-                submission.fav_player_id,
-                submission.highlight_id
+                ...ids // validated, in VOTE_CATEGORIES order = the column order above
             ]
         );
 

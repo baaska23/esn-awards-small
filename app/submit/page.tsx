@@ -7,6 +7,7 @@ import CustomArrow from "../components/CustomArrow";
 import OTPVerification from "../components/OTPVerification";
 import { InlineNotice } from "../components/Notifier";
 import { notify } from "@/lib/notify";
+import { missingCategories } from "@/lib/vote-categories";
 import { useRouter } from "next/navigation";
 
 export default function Submit() {
@@ -67,9 +68,9 @@ export default function Submit() {
       return;
     }
 
-    let isInComplete = Object.keys(payload).length < 7;
-    if (isInComplete) {
-      notify("Санал асуулгыг бүрэн бөглөнө үү.");
+    const missing = missingCategories(payload);
+    if (missing.length) {
+      notify(`Санал асуулгыг бүрэн бөглөнө үү: ${missing.map((c) => c.label).join(", ")}`);
       return;
     }
 
@@ -166,6 +167,8 @@ export default function Submit() {
         sessionStorage.clear();
       } else if (response.status === 409) {
         notify("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
+      } else if (response.status === 400) {
+        notify("Санал буруу байна. Ангилал бүрээс нэр дэвшигч дахин сонгоно уу.");
       } else if (response.status === 429) {
         notify("Хэт олон оролдлого хийлээ. Түр хүлээгээд дахин оролдоно уу.");
       } else if (response.status === 401) {

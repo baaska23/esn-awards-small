@@ -29,11 +29,13 @@ Every page under `app/` is a `"use client"` step. The order is fixed by each pag
 
 `/` → `pc-team` → `mobile-team` → `pc-player` → `mobile-player` → `coach` → `igl` → `talent` → `streamer` → `fan-favorite` → `highlight` → `submit`
 
-Each step fetches its nominees from a matching `app/api/<category>/route.ts`, and stores the selection in **`sessionStorage`** under a key like `pc_team_id`, `coach_id`, `fav_player_id`, `highlight_id`. `app/submit/page.tsx` reads all sessionStorage keys into the submission payload, so key names must match the column names in `esn.submissions`. Adding/renaming a category means updating the page, its API route, the submit payload, and the `/api/submit` INSERT together.
+Each step fetches its nominees from a matching `app/api/<category>/route.ts`, and stores the selection in **`sessionStorage`** under a key like `pc_team_id`, `coach_id`, `fav_player_id`, `highlight_id`. `app/submit/page.tsx` reads all sessionStorage keys into the submission payload, so key names must match the column names in `esn.submissions`. Adding/renaming a category means updating the page, its API route, `lib/vote-categories.ts`, the submit payload, and the `/api/submit` INSERT together.
+
+`lib/vote-categories.ts` lists the 10 categories (key, header label, `esn.awards` slug + `sport_id`). Each key is also the `esn.awards` column the page stores. The submit page uses it to name the missing categories. `/api/submit` uses it to return 400 unless all 10 ids are positive integers and each one exists in `esn.awards` under that category's slug/sport (one `EXISTS` per category, checked before the transaction).
 
 ### Submit + verification
 `submit/page.tsx`:
-1. Checks completeness (count of sessionStorage keys) and that input is an email (SMS is disabled both client-side and in `/api/otp/send`).
+1. Checks completeness (all 10 keys from `lib/vote-categories.ts`) and that input is an email (SMS is disabled both client-side and in `/api/otp/send`).
 2. `GET /api/check-register?identity=` — early check for **one vote per identity per day** (Ulaanbaatar day, computed server-side) against `esn.voters.vote_date`.
 3. Shows `OTPVerification`, which calls `/api/otp/send|resend|verify`. These routes proxy to an internal OTP service at `http://10.21.68.21/otp/api/v1/...` (app_name `esnAwards`); it's only reachable from the deployment network.
 4. On verify, `/api/otp/verify` returns a `voteToken` (15-minute JWT signed with `JWT_SECRET`, subject = normalized identity, `lib/vote-token.ts`). `POST /api/submit` rejects with 401 unless the token is valid for the submitted email, then inserts into `esn.voters` and `esn.submissions` in one transaction. `UNIQUE (identity, vote_date)` on `esn.voters` is the real once-per-day guard; a violation returns 409.
