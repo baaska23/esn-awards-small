@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { imageSrc } from "@/lib/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
@@ -65,7 +66,7 @@ export default function CustomHighlightCard({
       <div className="flex flex-col items-center gap-2 shrink-0">
         <div className="relative w-24 h-32 md:w-28 md:h-36 lg:w-40 lg:h-40">
           <Image 
-            src={`/mea${playerImg}`} 
+            src={imageSrc(playerImg)} 
             alt="playerImg" 
             fill 
             className="object-contain rounded-lg" 
@@ -82,7 +83,7 @@ export default function CustomHighlightCard({
       <div className="flex items-center flex-1 w-full gap-1">
         <div className="relative flex-1 aspect-video rounded-lg overflow-hidden min-w-0">
           <Image 
-            src={`/mea${posterImg}`} 
+            src={imageSrc(posterImg)} 
             alt={`${username} highlight`} 
             fill 
             className="object-cover" 
@@ -96,7 +97,7 @@ export default function CustomHighlightCard({
         >
           <div className="relative w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8">
             <Image 
-              src={`/mea/${playButton}`} 
+              src={imageSrc(playButton)} 
               alt="play" 
               fill
               className="object-contain" 

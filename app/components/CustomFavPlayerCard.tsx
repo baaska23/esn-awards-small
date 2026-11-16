@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { imageSrc } from "@/lib/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -53,7 +54,7 @@ export default function CustomFavPlayerCard({
         {!hover && (
           <div className="relative w-24 h-24 lg:w-28 lg:h-28">
             <Image
-              src={`/mea/${teamImg}`}
+              src={imageSrc(teamImg)}
               alt={teamName}
               fill
               className="object-contain rounded-lg"
@@ -88,7 +89,7 @@ export default function CustomFavPlayerCard({
       <div className="flex md:hidden gap-3 cursor-pointer">
         <div className="relative w-30 h-30 shrink-0">
           <Image
-            src={`/mea/${teamImg}`}
+            src={imageSrc(teamImg)}
             alt={teamName}
             fill
             className="object-contain rounded-lg"

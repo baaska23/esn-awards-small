@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { imageSrc } from "@/lib/image";
 import {motion} from "framer-motion"
 
 export default function CustomStreamer({img, username, onClick, isSelected, index}) {
@@ -28,7 +29,7 @@ export default function CustomStreamer({img, username, onClick, isSelected, inde
             }}
         >
             <div className="relative flex items-center justify-center rounded-2xl mt-4 mb-2 w-24 h-24 lg:w-32 lg:h-32">
-                <Image src={`/mea${img}`} alt="img" fill className="object-contain p-1 sm:p-2" priority />
+                <Image src={imageSrc(img)} alt="img" fill className="object-contain p-1 sm:p-2" priority />
             </div>
             <div className="w-full h-7 bg-white/10 rounded-xl flex items-center justify-center font-bold text-white tracking-wide border border-white/15 text-[10px] sm:text-sm lg:text-[16px] lg:h-10">
                 {username}
