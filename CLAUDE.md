@@ -67,8 +67,8 @@ All images live in the public Supabase Storage bucket `esn-awards-2026`, not in 
 ### Auth
 `lib/auth.ts` + `/api/login` implement a JWT admin login against `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `JWT_SECRET` env vars. No current page or route consumes the admin token. `JWT_SECRET` is also required for voting (vote tokens).
 
-### Poll deadline
-`app/layout.tsx` has `POLL_DEADLINE`; after it passes, the root layout replaces the whole app with a "voting closed" screen. The home page (`app/page.tsx`) shows the closing date as separate hardcoded text — update both for a new awards season.
+### Poll window
+`lib/poll-window.ts` holds `POLL_START` / `POLL_DEADLINE` (Ulaanbaatar time) and their display labels. `middleware.ts` checks them on every request: outside the window, pages are rewritten to `/coming-soon` (before start) or `/closed` (after deadline), and `/api/*` returns 403 with a Mongolian error. Static assets (`/_next`, `/fonts`, `/new-bg`, files with extensions) always pass. During the window, visiting `/coming-soon` or `/closed` redirects to `/`. Pages are statically prerendered, so time checks must live in middleware, not in layouts/pages. Update both dates and labels for a new awards season; the home page reads `POLL_DEADLINE_LABEL`.
 
 ### Unused/legacy
 `@supabase/supabase-js`, `express-rate-limit`, `crypto` and `class-variance-authority` are dependencies but not imported anywhere (the app talks to Supabase only through `pg`). `/api/check-email` and `/api/check-phone` are no longer called (the code using them in `submit/page.tsx` is commented out).

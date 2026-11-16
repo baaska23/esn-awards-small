@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { notify } from "@/lib/notify";
 import { imageSrc } from "@/lib/image";
+import { POLL_DEADLINE_LABEL } from "@/lib/poll-window";
 
 export default function Home() {
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function Home() {
         exit={{ opacity: 0, scale: 0 }}
         className="bg-white/20 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-2 text-white text-xl font-thin"
       >
-        Санал хураалт 2026.12.14 23:59 цагт хаагдана
+        Санал хураалт {POLL_DEADLINE_LABEL} цагт хаагдана
       </motion.div>
       <CustomButton to="/pc-team">ЭХЛЭХ</CustomButton>
     </div>
