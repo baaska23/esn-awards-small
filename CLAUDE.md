@@ -11,14 +11,18 @@ Public voting site for the Mongolian Esports Awards (ESN Awards). Next.js 15 App
 - `npm run dev` — dev server (Turbopack) at http://localhost:3000/mea
 - `npm run build` — production build (Turbopack, `output: "standalone"`)
 - `npm run start` — serve the production build
-- Docker: `Dockerfile` builds the standalone output and runs `node server.js` on port 3000.
+- Docker: `Dockerfile` builds the standalone output and runs `node server.js` on port 3000. `.env` is in `.dockerignore`; pass config at runtime with `docker run --env-file .env -p 3000:3000 <image>`.
+- Env vars are listed in `.env.example`.
 
-There is no test suite and no `lint` script (`eslint.config.mjs` references `eslint-config-next`, which is not installed). Node 20.x.
+There is no test suite and no `lint` script (`eslint.config.mjs` references `eslint-config-next`, which is not installed). Node 20.x. `npm run build` type-checks every file under `app/`, including ones nothing imports.
+
+### Branches
+One branch per awards season: `v2` is the 2026 season. Commit season work there, not to `main` or feature branches.
 
 ## Architecture
 
 ### basePath
-`next.config.ts` sets `basePath: "/mea"`. `router.push("/coach")` and `<Link>` get the prefix automatically, but **raw `fetch` URLs and CSS `url(...)` / `<Image src>` strings do not** — they are hardcoded as `/mea/api/...` and `/mea/BG_*.jpg`. Keep this prefix when adding fetches or assets.
+`next.config.ts` sets `basePath: "/mea"`. `router.push("/coach")` and `<Link>` get the prefix automatically, but **raw `fetch` URLs and CSS `url(...)` / `<Image src>` strings do not** — they are hardcoded as `/mea/api/...` and `/mea/...`. Keep this prefix when adding fetches or assets. For nominee images use `imageSrc()` (see Images) instead of building paths by hand.
 
 ### Voting flow (client-side wizard)
 Every page under `app/` is a `"use client"` step. The order is fixed by each page's `router.push` / `CustomArrow to=`:
@@ -38,7 +42,17 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 - `lib/db.ts` — `getPool()` returns a lazily-created singleton `pg.Pool` (preferred); `getClient()` creates a one-off `Client` (still used by `check-email`/`check-phone`). Config from env: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`; SSL is on unless `DB_SSL=false` (Supabase requires it).
 - `supabase/schema.sql` — full DDL for the Supabase database (sets DB time zone to Asia/Ulaanbaatar, enables RLS with no policies).
 - All tables live in the `esn` schema. Nominees for every category come from a single `esn.awards` table filtered by `slug` (`teams`, `players`, `coaches`, `igls`, `talents`, `streamers`, `highlights`, …) and `sport_id` (PC vs mobile). Some routes hardcode exclusions (e.g. specific `player_id`s) in SQL.
-- Image paths in `esn.awards` rows (`team_image_url`, `sport_image_url`, …) are relative filenames rendered from `public/`.
+- `sport_id`: `1` = PC (CS2), `2` = mobile (PUBG Mobile, MLBB); the game is told apart by `sport_image_url` (`cs.png`, `pubg_logo.png`, `mlbb_logo.png`). The fan-favorite slug is `favs`.
+- Each category's vote id column (`pc_player_id`, `coach_id`, `igl_id`, `fav_player_id`, …) holds the person's `esn.players.id` (or the team id for team categories), so vote results join back to `esn.players`. Every person row in `esn.awards` also carries `player_id`.
+- `esn.players` — one row per nominee/coach; ids are chosen explicitly (2026 seed: `1xx` CS2, `2xx` PUBG Mobile, `3xx` MLBB).
+- `esn.tournaments` (`event_month` must be the 1st of a month) and `esn.achievements` (`achievement_type` is `tournament_place` with `placement > 0`, or `mvp` with `placement` NULL; at most one MVP per tournament).
+- `supabase/seed_2026.sql` — 2026 nominees, tournaments and achievements (from Liquipedia). Talent, streamer and highlight rows are `SAMPLE` placeholders to replace. `supabase/test_achievements.sql` adds `[TEST] ...` tournaments/achievements for UI testing, with a cleanup block at the bottom.
+
+### Images
+`imageSrc()` in `lib/image.ts` resolves an image value from `esn.awards`: a full `https://` URL is used as-is (Supabase Storage, public bucket `esn-awards-2026`: `https://<project-ref>.supabase.co/storage/v1/object/public/esn-awards-2026/<file>`), a plain filename is served from `public/` as `/mea/<file>`. A leading `/` is tolerated, so pages can keep passing `` `/${row.player_image_url}` ``. All card components use it. The bucket has no storage policies: public read by URL only; uploads/deletes only via the dashboard or the service_role key.
+
+### Achievements pop-up
+`CustomPlayerCard` (PC player, mobile player, coach, IGL pages) has a medal button that calls `onAchievementsClick`; it stops propagation so it never selects/votes. The page stores the row in `achievementsPlayer` state and renders `AchievementsModal`, which fetches `GET /api/achievements?player_id=` (newest first) and passes the list to `CustomAchievementCard` (summary + all rows + empty state). Pages must keep `player_id` in their row type for this.
 
 ### Auth
 `lib/auth.ts` + `/api/login` implement a JWT admin login against `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `JWT_SECRET` env vars. No current page or route consumes the token.
@@ -47,4 +61,4 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 `app/layout.tsx` has `POLL_DEADLINE`; after it passes, the root layout replaces the whole app with a "voting closed" screen. The home page (`app/page.tsx`) shows the closing date as separate hardcoded text — update both for a new awards season.
 
 ### Unused/legacy
-`@supabase/supabase-js`, `express-rate-limit`, and `crypto` are dependencies but not imported anywhere. `/api/check-email` and `/api/check-phone` are no longer called (the code using them in `submit/page.tsx` is commented out).
+`@supabase/supabase-js`, `express-rate-limit`, `crypto` and `class-variance-authority` are dependencies but not imported anywhere (the app talks to Supabase only through `pg`). `app/api/pc-players/route.ts` still hides `player_id` 4 and 13 (last season's ids). `/api/check-email` and `/api/check-phone` are no longer called (the code using them in `submit/page.tsx` is commented out).
