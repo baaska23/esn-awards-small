@@ -46,7 +46,7 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 ### Data layer
 - `lib/db.ts` — `getPool()` returns a lazily-created singleton `pg.Pool` (preferred); `getClient()` creates a one-off `Client` (still used by `check-email`/`check-phone`). Config from env: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`; SSL is on unless `DB_SSL=false` (Supabase requires it).
 - `supabase/schema.sql` — full DDL for the Supabase database (sets DB time zone to Asia/Ulaanbaatar, enables RLS with no policies).
-- All tables live in the `esn` schema. Nominees for every category come from a single `esn.awards` table filtered by `slug` (`teams`, `players`, `coaches`, `igls`, `talents`, `streamers`, `highlights`, …) and `sport_id` (PC vs mobile). Some routes hardcode exclusions (e.g. specific `player_id`s) in SQL.
+- All tables live in the `esn` schema. Nominees for every category come from a single `esn.awards` table filtered by `slug` (`teams`, `players`, `coaches`, `igls`, `talents`, `streamers`, `highlights`, …) and `sport_id` (PC vs mobile), with no per-player exclusions, so the lists match the nominee check in `/api/submit`.
 - `sport_id`: `1` = PC (CS2), `2` = mobile (PUBG Mobile, MLBB); the game is told apart by `sport_image_url` (`cs.png`, `pubg_logo.png`, `mlbb_logo.png`). The fan-favorite slug is `favs`.
 - Each category's vote id column (`pc_player_id`, `coach_id`, `igl_id`, `fav_player_id`, …) holds the person's `esn.players.id` (or the team id for team categories), so vote results join back to `esn.players`. Every person row in `esn.awards` also carries `player_id`.
 - `esn.players` — one row per nominee/coach; ids are chosen explicitly (2026 seed: `1xx` CS2, `2xx` PUBG Mobile, `3xx` MLBB).
@@ -71,4 +71,4 @@ All images live in the public Supabase Storage bucket `esn-awards-2026`, not in 
 `app/layout.tsx` has `POLL_DEADLINE`; after it passes, the root layout replaces the whole app with a "voting closed" screen. The home page (`app/page.tsx`) shows the closing date as separate hardcoded text — update both for a new awards season.
 
 ### Unused/legacy
-`@supabase/supabase-js`, `express-rate-limit`, `crypto` and `class-variance-authority` are dependencies but not imported anywhere (the app talks to Supabase only through `pg`). `app/api/pc-players/route.ts` still hides `player_id` 4 and 13 (last season's ids). `/api/check-email` and `/api/check-phone` are no longer called (the code using them in `submit/page.tsx` is commented out).
+`@supabase/supabase-js`, `express-rate-limit`, `crypto` and `class-variance-authority` are dependencies but not imported anywhere (the app talks to Supabase only through `pg`). `/api/check-email` and `/api/check-phone` are no longer called (the code using them in `submit/page.tsx` is commented out).
