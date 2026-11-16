@@ -70,11 +70,14 @@ export default function Highlight() {
     >
       <CustomTitle />
       <CustomHeader header1="HIGHLIGHT" header2="OF THE YEAR" />
-      <div className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 justify-items-center items-stretch pt-6">
+      <div className="w-full max-w-6xl mx-auto flex flex-wrap justify-center items-stretch gap-4 sm:gap-6 pt-6">
         {highlights.map((highlight, index) => {
           return (
-            <CustomHighlightCard
+            <div
               key={highlight.highlight_id}
+              className="flex justify-center w-full sm:w-[calc((100%-1.5rem)/2)] md:w-[calc((100%-3rem)/3)] lg:w-[calc((100%-6rem)/5)]"
+            >
+            <CustomHighlightCard
               username={highlight.username}
               posterImg={`/${highlight.highlight_image_url}`}
               index={index}
@@ -87,6 +90,7 @@ export default function Highlight() {
               }
               isSelected={selectedHighlightId === highlight.highlight_id}
             />
+            </div>
           );
         })}
       </div>

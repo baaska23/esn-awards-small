@@ -104,10 +104,13 @@ export default function FavoritePlayers() {
       <CustomTitle />
       <CustomHeader header1="FAN FAVORITE PLAYER" header2="OF THE YEAR" />
       
-      <div className="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-items-center items-stretch pt-6">
+      <div className="w-full max-w-5xl mx-auto flex flex-wrap justify-center items-stretch gap-4 sm:gap-6 pt-6">
         {teamGroups.map((team, index) => (
-          <CustomFavPlayerCard
+          <div
             key={team.team_id}
+            className="flex justify-center w-full md:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+          >
+          <CustomFavPlayerCard
             teamImg={team.team_image_url}
             teamName={team.team_name}
             players={team.players}
@@ -115,6 +118,7 @@ export default function FavoritePlayers() {
             selectedPlayerId={selectedFavId}
             index={index}
           />
+          </div>
         ))}
       </div>
 
