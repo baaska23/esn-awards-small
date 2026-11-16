@@ -30,12 +30,13 @@ Each step fetches its nominees from a matching `app/api/<category>/route.ts`, an
 ### Submit + verification
 `submit/page.tsx`:
 1. Checks completeness (count of sessionStorage keys) and that input is an email (SMS is disabled both client-side and in `/api/otp/send`).
-2. `GET /api/check-register?identity=&date=` — enforces **one vote per identity per day** by counting rows in `esn.voters`.
+2. `GET /api/check-register?identity=` — early check for **one vote per identity per day** (Ulaanbaatar day, computed server-side) against `esn.voters.vote_date`.
 3. Shows `OTPVerification`, which calls `/api/otp/send|resend|verify`. These routes proxy to an internal OTP service at `http://10.21.68.21/otp/api/v1/...` (app_name `esnAwards`); it's only reachable from the deployment network.
-4. On verify: `POST /api/submit` (insert into `esn.submissions`) then `POST /api/register` (insert into `esn.voters`).
+4. On verify: `POST /api/submit` inserts into `esn.voters` and `esn.submissions` in one transaction. `UNIQUE (identity, vote_date)` on `esn.voters` is the real once-per-day guard; a violation returns 409.
 
 ### Data layer
-- `lib/db.ts` — `getPool()` returns a lazily-created singleton `pg.Pool` (preferred); `getClient()` creates a one-off `Client` (still used by `check-email`/`check-phone`). Config from env: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`.
+- `lib/db.ts` — `getPool()` returns a lazily-created singleton `pg.Pool` (preferred); `getClient()` creates a one-off `Client` (still used by `check-email`/`check-phone`). Config from env: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`; SSL is on unless `DB_SSL=false` (Supabase requires it).
+- `supabase/schema.sql` — full DDL for the Supabase database (sets DB time zone to Asia/Ulaanbaatar, enables RLS with no policies).
 - All tables live in the `esn` schema. Nominees for every category come from a single `esn.awards` table filtered by `slug` (`teams`, `players`, `coaches`, `igls`, `talents`, `streamers`, `highlights`, …) and `sport_id` (PC vs mobile). Some routes hardcode exclusions (e.g. specific `player_id`s) in SQL.
 - Image paths in `esn.awards` rows (`team_image_url`, `sport_image_url`, …) are relative filenames rendered from `public/`.
 

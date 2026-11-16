@@ -92,11 +92,10 @@ export default function Submit() {
       }
     }
 
-    const today = new Date().toISOString().slice(0, 10);
     let total = 0;
 
     try {
-      const res = await fetch(`/mea/api/check-register?identity=${encodeURIComponent(input)}&date=${today}`);
+      const res = await fetch(`/mea/api/check-register?identity=${encodeURIComponent(input)}`);
       if (res.ok) {
         const data = await res.json();
         total = data.total ?? 0;
@@ -146,14 +145,7 @@ export default function Submit() {
       highlight_id: payload.highlight_id
     };
 
-    const today = new Date().toISOString().slice(0, 10);
-    let total = 0;
-    const registration = {
-      last_updated: today,
-      identity: input,
-      total: total + 1
-    }
-
+    // /api/submit records the voter and the vote in one transaction.
     try {
       const response = await fetch("/mea/api/submit", {
         method: "POST",
@@ -166,33 +158,13 @@ export default function Submit() {
       if (response.ok) {
         setIsSubmit(true);
         sessionStorage.clear();
+      } else if (response.status === 409) {
+        alert("Та өнөөдөр санал өгсөн байна. Маргааш дахин оролдоно уу.");
       } else {
         alert("Алдаа гарлаа. Дахин оролдоно уу.");
       }
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Алдаа гарлаа. Дахин оролдоно уу.");
-    } finally {
-      setIsLoading(false);
-    }
-
-    try {
-      const response = await fetch("/mea/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(registration),
-      });
-
-      if (response.ok) {
-        setIsSubmit(true);
-        sessionStorage.clear();
-      } else {
-        alert("Алдаа гарлаа. Дахин оролдоно уу.");
-      }
-    } catch (error) {
-      console.error("Registration error:", error);
       alert("Алдаа гарлаа. Дахин оролдоно уу.");
     } finally {
       setIsLoading(false);
