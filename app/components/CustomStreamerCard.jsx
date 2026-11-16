@@ -6,8 +6,11 @@ export default function CustomStreamer({img, username, onClick, isSelected, inde
     return(
         <NomineeCardShell index={index} isSelected={isSelected} onClick={onClick}>
             {/* Photo */}
-            <div className="relative mx-3 mt-3 aspect-square">
-                <Image src={imageSrc(img)} alt={username ?? ""} fill sizes="176px" className="rounded-xl object-contain object-bottom" priority />
+            {/* Padding lives on the wrapper: Safari mis-sizes a square flex item that has side margins */}
+            <div className="w-full px-3 pt-3">
+                <div className="relative aspect-square w-full">
+                    <Image src={imageSrc(img)} alt={username ?? ""} fill sizes="176px" className="rounded-xl object-contain object-bottom" priority />
+                </div>
             </div>
 
             {/* Name: up to two lines, height reserved so cards stay level */}

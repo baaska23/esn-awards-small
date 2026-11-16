@@ -19,8 +19,11 @@ export default function CustomPlayer({sportImg, img, teamImg, username, name, on
             </div>
 
             {/* Photo */}
-            <div className="relative mx-3 mt-2 aspect-square">
-                <Image src={imageSrc(img)} alt={username ?? ""} fill sizes="176px" className="rounded-xl object-contain object-bottom" priority />
+            {/* Padding lives on the wrapper: Safari mis-sizes a square flex item that has side margins */}
+            <div className="w-full px-3 pt-2">
+                <div className="relative aspect-square w-full">
+                    <Image src={imageSrc(img)} alt={username ?? ""} fill sizes="176px" className="rounded-xl object-contain object-bottom" priority />
+                </div>
             </div>
 
             {/* Team logo · username · achievements */}

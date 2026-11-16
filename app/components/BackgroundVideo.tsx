@@ -37,7 +37,7 @@ export default function BackgroundVideo() {
       <div
         aria-hidden
         className="
-          fixed inset-0 -z-10
+          fixed inset-0 -z-10 bg-[#0b1330]
           bg-[url('/mea/new-bg/bg-photo-mobile.webp')] md:bg-[url('/mea/new-bg/bg-photo-desktop.webp')]
           bg-no-repeat bg-cover bg-center
         "

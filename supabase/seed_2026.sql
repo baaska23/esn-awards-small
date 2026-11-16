@@ -28,10 +28,10 @@ INSERT INTO esn.players (id, username, fullname, image_url, sport_id) VALUES
     -- CS2 — The MongolZ
     (101, 'bLitz',     'Garidmagnai Byambasuren', 'blitz.png',       1),
     (102, 'Techno4K',  'Sodbayar Munkhbold',      'techno.png',      1),
-    (103, '910',       'Usukhbayar Banzragch',    'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/910.jpeg',         1),
+    (103, '910',       'Usukhbayar Banzragch',    '910.png',         1),
     (104, 'cobrazera', 'Anarbileg Uuganbayar',    'placeholder.png', 1),
     (105, 'nin9',      'Yesuntumur Gantulga',     'placeholder.png', 1),
-    (106, 'maaRaa',    'Erdenedalai Bayanbat',    'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/maaraa.jpeg',      1),  -- coach
+    (106, 'maaRaa',    'Erdenedalai Bayanbat',    'maaraa.png',      1),  -- coach
     -- CS2 — The Huns Esports
     (111, 'controlez', 'Unudelger Baasanjargal',  'controlez.png',   1),
     (112, 'carnage',   'Badral Purevkhuu',        'carnage.webp',    1),  -- coach
@@ -56,17 +56,17 @@ INSERT INTO esn.players (id, username, fullname, image_url, sport_id) VALUES
 
 -- PC team of the year
 INSERT INTO esn.awards (slug, sport_id, team_id, pc_team_id, team_name, team_image_url, sport_image_url) VALUES
-    ('teams', 1, 1, 1, 'The MongolZ',       'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png', 'cs.png'),
+    ('teams', 1, 1, 1, 'The MongolZ',       'mongolz.png', 'cs.png'),
     ('teams', 1, 2, 2, 'The Huns Esports',  'huns.png',    'cs.png'),
     ('teams', 1, 3, 3, 'Chinggis Warriors', 'cw.png',      'cs.png');
 
 -- Mobile team of the year
 INSERT INTO esn.awards (slug, sport_id, team_id, mobile_team_id, team_name, team_image_url, sport_image_url) VALUES
-    ('teams', 2, 4, 4, 'The MongolZ PUBGM',  'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png',     'pubg_logo.png'),
+    ('teams', 2, 4, 4, 'The MongolZ PUBGM',  'mongolz.png',     'pubg_logo.png'),
     ('teams', 2, 5, 5, 'E-Sahin Esports',    'placeholder.png', 'pubg_logo.png'),
     ('teams', 2, 6, 6, 'Golden Ticket',      'placeholder.png', 'pubg_logo.png'),
     ('teams', 2, 7, 7, 'Champions Esports',  'champions.png',   'pubg_logo.png'),
-    ('teams', 2, 8, 8, 'The MongolZ MLBB',   'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png',     'mlbb_logo.png'),
+    ('teams', 2, 8, 8, 'The MongolZ MLBB',   'mongolz.png',     'mlbb_logo.png'),
     ('teams', 2, 9, 9, 'The Akatsuki',       'placeholder.png', 'mlbb_logo.png');
 
 -- PC player of the year
@@ -75,9 +75,9 @@ INSERT INTO esn.awards (slug, sport_id, team_id, team_name, team_image_url, play
 SELECT 'players', 1, t.team_id, t.team_name, t.team_image_url, p.id, p.id,
        p.username, p.fullname, p.image_url, 'cs.png'
 FROM esn.players p
-JOIN (VALUES (101, 1, 'The MongolZ', 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png'), (102, 1, 'The MongolZ', 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png'),
-             (103, 1, 'The MongolZ', 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png'), (104, 1, 'The MongolZ', 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png'),
-             (105, 1, 'The MongolZ', 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png'),
+JOIN (VALUES (101, 1, 'The MongolZ', 'mongolz.png'), (102, 1, 'The MongolZ', 'mongolz.png'),
+             (103, 1, 'The MongolZ', 'mongolz.png'), (104, 1, 'The MongolZ', 'mongolz.png'),
+             (105, 1, 'The MongolZ', 'mongolz.png'),
              (111, 2, 'The Huns Esports', 'huns.png'),
              (121, 3, 'Chinggis Warriors', 'cw.png'))
      AS t(player_id, team_id, team_name, team_image_url) ON t.player_id = p.id;
@@ -85,7 +85,7 @@ JOIN (VALUES (101, 1, 'The MongolZ', 'https://xybjtvqolcrypevzyxfp.supabase.co/s
 -- Mobile player of the year
 INSERT INTO esn.awards (slug, sport_id, team_id, team_name, team_image_url, player_id, mobile_player_id,
                         username, fullname, player_image_url, sport_image_url)
-SELECT 'players', 2, t.team_id, t.team_name, 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png', p.id, p.id,
+SELECT 'players', 2, t.team_id, t.team_name, 'mongolz.png', p.id, p.id,
        p.username, p.fullname, p.image_url, t.sport_image_url
 FROM esn.players p
 JOIN (VALUES (201, 4, 'The MongolZ PUBGM', 'pubg_logo.png'),
@@ -102,17 +102,17 @@ INSERT INTO esn.awards (slug, sport_id, team_id, team_name, team_image_url, play
 SELECT 'coaches', p.sport_id, t.team_id, t.team_name, t.team_image_url, p.id, p.id,
        p.username, p.fullname, p.image_url, t.sport_image_url
 FROM esn.players p
-JOIN (VALUES (106, 1, 'The MongolZ',       'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png', 'cs.png'),
+JOIN (VALUES (106, 1, 'The MongolZ',       'mongolz.png', 'cs.png'),
              (112, 2, 'The Huns Esports',  'huns.png',    'cs.png'),
              (122, 3, 'Chinggis Warriors', 'cw.png',      'cs.png'),
-             (206, 4, 'The MongolZ PUBGM', 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png', 'pubg_logo.png'),
-             (304, 8, 'The MongolZ MLBB',  'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png', 'mlbb_logo.png'))
+             (206, 4, 'The MongolZ PUBGM', 'mongolz.png', 'pubg_logo.png'),
+             (304, 8, 'The MongolZ MLBB',  'mongolz.png', 'mlbb_logo.png'))
      AS t(player_id, team_id, team_name, team_image_url, sport_image_url) ON t.player_id = p.id;
 
 -- IGL of the year (in-game leader / captain)
 INSERT INTO esn.awards (slug, sport_id, team_id, team_name, team_image_url, player_id, igl_id,
                         username, fullname, player_image_url, sport_image_url)
-SELECT 'igls', p.sport_id, t.team_id, t.team_name, 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png', p.id, p.id,
+SELECT 'igls', p.sport_id, t.team_id, t.team_name, 'mongolz.png', p.id, p.id,
        p.username, p.fullname, p.image_url, t.sport_image_url
 FROM esn.players p
 JOIN (VALUES (101, 1, 'The MongolZ',       'cs.png'),
@@ -122,7 +122,7 @@ JOIN (VALUES (101, 1, 'The MongolZ',       'cs.png'),
 -- Fan favorite (grouped by team on the page)
 INSERT INTO esn.awards (slug, sport_id, team_id, team_name, team_image_url, player_id, fav_player_id,
                         username, fullname, player_image_url)
-SELECT 'favs', p.sport_id, t.team_id, t.team_name, 'https://xybjtvqolcrypevzyxfp.supabase.co/storage/v1/object/public/esn-awards-2026/mongolz_logo.png', p.id, p.id,
+SELECT 'favs', p.sport_id, t.team_id, t.team_name, 'mongolz.png', p.id, p.id,
        p.username, p.fullname, p.image_url
 FROM esn.players p
 JOIN (VALUES (101, 1, 'The MongolZ'), (102, 1, 'The MongolZ'), (103, 1, 'The MongolZ'),

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "dev:phone": "node scripts/dev-phone.mjs",
+    "dev:xcode": "node scripts/dev-xcode.mjs",
     "build": "next build --turbopack",
     "start": "next start"
   },

@@ -14,8 +14,11 @@ export default function CustomTeamCard({ sportImg, img, name, isSelected, onClic
             </div>
 
             {/* Team logo */}
-            <div className="relative mx-5 mt-3 aspect-square">
-                <Image src={imageSrc(img)} alt={name ?? ""} fill sizes="176px" className="object-contain" priority />
+            {/* Padding lives on the wrapper: Safari mis-sizes a square flex item that has side margins */}
+            <div className="w-full px-5 pt-3">
+                <div className="relative aspect-square w-full">
+                    <Image src={imageSrc(img)} alt={name ?? ""} fill sizes="176px" className="object-contain" priority />
+                </div>
             </div>
 
             {/* Team name: up to two lines, height reserved so cards stay level */}
